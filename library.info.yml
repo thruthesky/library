@@ -1,0 +1,5 @@
+name: Library
+type: module
+description: 'This is a Library module for other modules of Withcenter'
+package: Withcenter
+core: 8.x

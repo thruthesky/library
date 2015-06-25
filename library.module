@@ -1,0 +1,24 @@
+<?php
+$error_information = [];
+
+
+if ( ! function_exists('di') ) {
+    function di($obj)
+    {
+        echo '<pre>';
+        print_r($obj);
+        echo '</pre>';
+    }
+}
+
+function error($code, $info)
+{
+    global $error_information;
+    $error_information[$code] = $info;
+    return $code;
+}
+function get_error($code)
+{
+    global $error_information;
+    return $error_information[$code];
+}

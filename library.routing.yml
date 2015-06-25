@@ -1,0 +1,51 @@
+library.category.admin:
+  path: '/library/category/admin'
+  defaults:
+    _controller: Drupal\library\Controller\CategoryController::collection
+  requirements:
+    _permission: 'access content'
+
+
+library.category.admin.group.add:
+  path: '/library/category/admin/group/add'
+  defaults:
+    _controller: Drupal\library\Controller\CategoryController::add
+  requirements:
+    _permission: 'access content'
+
+library.category.admin.group.delete:
+  path: '/library/category/admin/group/del'
+  defaults:
+    _controller: Drupal\library\Controller\CategoryController::del
+  requirements:
+    _permission: 'access content'
+
+library.category.admin.delete.children:
+  path: '/library/category/admin/delete/children'
+  defaults:
+    _controller: Drupal\library\Controller\CategoryController::del
+  requirements:
+    _permission: 'access content'
+
+
+library.category.admin.delete.confirm:
+  path: '/library/category/admin/delete/confirm'
+  defaults:
+    _controller: Drupal\library\Controller\CategoryController::deleteConfirm
+  requirements:
+    _permission: 'access content'
+
+library.category.admin.group.update:
+  path: '/library/category/admin/group/update'
+  defaults:
+    _controller: Drupal\library\Controller\CategoryController::update
+  requirements:
+    _permission: 'access content'
+
+library.category.admin.group.list:
+  path: '/library/category/admin/group/list'
+  defaults:
+    _controller: Drupal\library\Controller\CategoryController::groupCollection
+  requirements:
+    _permission: 'access content'
+
