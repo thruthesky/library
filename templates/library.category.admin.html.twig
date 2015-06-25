@@ -1,0 +1,53 @@
+<div class='library-admin-page'>
+	<div class='title'>Add a parent Category</div>	
+    <div class='content-wrapper admin-category'>        
+        <form class='form-add' action='/library/category/admin/group/add'>
+            <fieldset>
+                <!--temp commented due to css conflict <legend></legend>-->
+                <div class="row">
+                    <div class="value">
+                        <div class="element">
+                            <input type="text" name="name">
+                            <input type="submit" value="Add">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div class='list'>
+			<table class='library-table category main' cellpadding=0 cellspacing=0 width='100%'>
+				<tr class='header'>
+					<td width='25%'>Category Name</td>
+					<td width='25%'>Author</td>
+					<td width='25%'>Children</td>
+					<td width='25%'>Commands</td>
+				</tr>
+				{% for group in data.groups %}
+				<tr>
+					<td>
+					<div class='category' category-id='{{ group.entity.id.value }}'>                
+						<span class='label'>
+							<div class='category-name'>
+								<a href="/library/category/admin/group/list?parent_id={{ group.entity.id.value }}">{{ group.entity.name.value }}</a>
+							</div>
+						</span>
+                        </div>
+					</td>
+					<td width='10%'>
+						<span class="name user-profile" uid="{{ group.user_id.target_id }}">{{ group.entity.user_id.entity.name.value }}</span>
+					</td>	
+					<td>
+						{{ group.child_no }}
+					</td>
+					<td>						
+						<div class='button-wrapper'>
+							<span class='command edit' root-id = '0'id='{{ group.entity.id.value }}'>Edit</span>
+							<a class='command' href='/library/category/admin/group/del?id={{ group.entity.id.value }}'  onclick="return category_delete( '{{ group.entity.name.value }}' );">Delete</a>
+						</div>						
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+        </div>
+    </div>
+</div>

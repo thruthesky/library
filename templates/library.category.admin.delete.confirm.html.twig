@@ -1,0 +1,20 @@
+{% set category = data.category %}
+<div class='library-admin-page'>
+	<div class='title'>Confirm Delete for category [ {{ category.name.value }} ]</div>
+	<div class='library-error'>
+		WARNING: Category [ {{ category.name.value }} ] has ( {{ data.children | length }} ) child categories. Are you sure you want to delete it?
+	</div>
+	<div class='top-menu'>
+		<a href="/library/category/admin/delete/children?id={{ category.id.value }}&confirmed=yes">YES</a>
+		<a href="/library/category/admin">NO</a>
+	</div>
+	<div class='content-wrapper delete-category-list'>
+		<div class='notice'>The categories below will also be deleted!</div>
+		<ol>
+		{% for child in data.children %}		
+			<li>{{ child.entity.name.value }}</li>
+		{% endfor %}
+		</ol>
+	</div>
+
+</div>

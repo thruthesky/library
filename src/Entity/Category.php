@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\library\CategoryInterface;
 use Drupal\user\UserInterface;
 
-
 /**
  * Defines the CategoryLog entity.
  *
