@@ -1,0 +1,6 @@
+version:
+  en: Library 0.2
+  ko: 라이브러리 0.2
+category_exist:
+  en: Category '#name' is already exists.
+  ko: 카테고리 '#name'은 이미 존재합니다.

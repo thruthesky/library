@@ -1,10 +1,7 @@
 <?php
 namespace Drupal\library;
-use Drupal\mall\HTML;
 use Drupal\user\Entity\User;
 
-use Drupal\mall\Entity\Member;
-use Drupal\mall\Entity\Category;
 
 /**
  * Class X
@@ -13,11 +10,10 @@ use Drupal\mall\Entity\Category;
  * @short Difference from Mall.php is that Mall.php is a library that is only used for mall module. x.php holds more generic functions.
  */
 
-class x {
+class Library {
 
-  const ERROR_CATEGORY_EXIST = 'ERROR_CATEGORY_EXIST';
-  const ERROR_BLANK_CATEGORY_NAME = 'ERROR_BLANK_CATEGORY_NAME';
-  
+
+
   const ERROR_PLEASE_LOGIN_FIRST = 'ERROR_PLEASE_LOGIN_FIRST';
   const ERROR_USER_EXISTS = 'ERROR_USER_EXISTS';
   
@@ -27,6 +23,7 @@ class x {
   const ERROR_MUST_BE_AN_INTEGER = 'ERROR_MUST_BE_AN_INTEGER';
 
 
+    static $error = [];
   static $input = [];
 
     static $months = [
@@ -46,10 +43,12 @@ class x {
   
   public static function getThemeName() {
     $uri = \Drupal::request()->getRequestUri();
-	    
+
+      // di($uri);
     //$uri = substr($uri, 1);
-    list($uri, $trash) = explode('?', $uri, 2);
-	if ( $uri == '/mall' or $uri == '/mall/' ) return 'mall.mall'; // this is the entry key of routing.yml
+    $ex = explode('?', $uri, 2);
+      $uri = $ex[0];
+	if ( $uri == '/library' or $uri == '/library/' ) return 'library.first-page'; // this is the entry key of routing.yml
 	
     $uri = trim($uri, '/ ');
     $uri = str_replace('/', '.', $uri);
@@ -113,8 +112,19 @@ class x {
   }
   public static function admin()
   {
-    return x::myUid() == 1;
+    return self::isAdmin();
   }
+
+    /*
+    *checks user role if the user is an admin
+    *requires $uid
+    */
+    public static function isAdmin(){
+        $user = User::load( self::myUid() );
+        if( $user->roles->target_id == 'administrator' ) return 1;
+        else return 0;
+    }
+
 
   public static function input() {
     return self::getInput();
@@ -180,6 +190,8 @@ class x {
 
   /**
    *
+   * Returns an Entity Item.
+   *
    * @Note returns an entity ID by User ID.
    *
    * Entity can be any type as long as it has user_id field.
@@ -220,37 +232,23 @@ class x {
 
     /**
      * @param $code
-     * @param array $kvs
-     * @param string $return_format
+     * @param array $info
      * @return array
      * @code
-     * return x::error(x::ERROR_BLANK_CATEGORY_NAME);
-     *  x::error(x::ERROR_CATEGORY_EXIST, ['name'=>$name, 'parent'=>$parent_name]);
+     * return x::error(-1234, ['message'=>'This is error', 'name'=>'JaeHo Song']);
      * @endcode
      */
-  public static function error($code, $kvs=[], $return_format = 'query_string') {
-    $message = self::errorMessage($code);
-    foreach( $kvs as $k => $v ) {
-      $message = str_replace('#'.$k, $v, $message);
-    }
-      if ( $return_format == 'query_string' ) return "&error=$code&message=$message";
-      else if ( $return_format == 'array' ) return [$code, $message];
-      else return "&error=$code&message=$message";
+  public static function error($code, $info = null) {
+      self::$error[$code] = $info;
+      return $code;
   }
 
-  private static function errorMessage($code) {
-    switch( $code ) {
-      case self::ERROR_CATEGORY_EXIST : $msg = "The category '#name' is already exists under '#parent'."; break;
-      case self::ERROR_BLANK_CATEGORY_NAME : $msg = "Category name cannot be blank!."; break;
-      case self::ERROR_PLEASE_LOGIN_FIRST : $msg = "Please login first!."; break;
-      case self::ERROR_USER_EXISTS : $msg = "The username [ #name ] already exists!."; break;
-      case self::ERROR_NOT_YOUR_ID : $msg = "The account that you are trying to edit/delete is not yours."; break;  
-      case self::ERROR_NOT_YOUR_POST : $msg = "The item you are trying to edit/delete is not yours."; break;   
-      case self::ERROR_MUST_BE_AN_INTEGER : $msg = "#field must be an integer."; break;      
-      default: $msg = 'Unknown'; break;
+    public static function getError() {
+        return self::$error;
     }
-    return $msg;
-  }
+
+
+
 
   /**
    * Returns true if the input object indicates Error.
@@ -261,69 +259,12 @@ class x {
    * @return bool
    */
   public static function isError($re) {
-    if ( is_numeric($re) && $re < 0 ) return true;
-    else if ( is_array($re) && strpos($re[0], 'ERROR') !== false ) return true;
-    return false;
+      return $re;
   }
   
   
   /*------------*/
-  
-  public static function my( $field )
-    {
-        if ( $field == 'uid' ) return \Drupal::currentUser()->getAccount()->id();
-        else if ( $field == 'uid' ) return \Drupal::currentUser()->getAccount()->getUsername();
-        else if ( $field == 'name' ) return \Drupal::currentUser()->getAccount()->getUsername();
-        else if ( $field == 'mail' ) return \Drupal::currentUser()->getAccount()->getEmail();
-        else {
-	        $user = User::load( \Drupal::currentUser()->getAccount()->id() );
-	        return x::getExtraField($field, $user);
-        }
-    }
 
-	
-	public static function getExtraField($field, User &$user)
-    {
-
-        global $_getExtraField;
-
-	    if ( ! isset($_getExtraField) ) $_getExtraField = [];
-
-
-	    $field = "field_$field";
-	    $uid = $user->id();
-
-	    /**
-	     *
-	     */
-	    if ( isset( $_getExtraField[$uid][ $field ] ) ) {
-		    return $_getExtraField[$uid][ $field ];
-	    }
-
-	    if ( $user->hasField($field) ) {
-		    $value = $user->get($field)->value;
-		    if ( ! $value ) $value = '';
-	    }
-	    else $value = '';
-
-
-
-
-	    $_getExtraField[$uid][ $field ] = $value;
-	    return $_getExtraField[$uid][ $field ];
-    }
-
-  public static function getDefaultInformation(array &$data) {	
-      $uid = x::myUid();
-      if ( empty($uid) ) return [];
-      else return x::getDefaultInformationByUid($uid, $data);
-  }
-  
-  public static function getDefaultInformationByUid( $uid, array &$data = [] ) {
-      $data['user'] = User::load( $uid );
-      $data['member'] = Member::loadByUid( $uid );
-      return $data;
-  }
 
     /**
      * @param $username
@@ -362,74 +303,42 @@ class x {
       return $user->id();
   }
 
+
+    /**
+     *
+     * Log into the user account.
+     *
+     * @param $username
+     * @return mixed
+     */
   public static function loginUser($username) {
         $user = user_load_by_name($username);
         user_login_finalize( $user );
         return $user->id();
   }
-  
-  
-  /*added by benjamin*/
-  /*
-  *delete by uid
-  */
-  public static function deleteUserByUid( $uid ){
-	//clean up mall_member with the uid	
-	$member = Member::loadByUid( $uid );	
-	$member->delete();
-  }
-  
-  /*
-  *checks user role if the user is an admin
-  *requires $uid
-  */
-  public static function isAdmin(){
-	$user = User::load( x::myUid() );
 
-	if( $user->roles->target_id == 'administrator' ) return 1;
-	else return 0;
-	 
-  }
-
-   /*
-  *in('uid') should always be available
-  *
-  */
-  public static function isMyAccount(){
-	if( self::in('uid') != self::myUid() ){
-		$error = x::error(x::ERROR_NOT_YOUR_ID);
-		return "?error=".$error[0]."&message=".$error[1];
-	  }
-	 else{
-		return 0;
-	 }
-  }
-  /***********************/
-  public static function getCategoryChildren( $no ){
-	return Category::loadChildren( $no );
-  }
-  
-  public static function getAllCategoryChildren( $no ){
-	return Category::loadAllChildren( $no );
-  }
-  
-  public static function getCategoryRoot( $no ){
-	return Category::groupRoot( $no );
-  }
-  
-  public static function getCategoryParents( $no ){
-	return Category::loadParents( $no );
-  }
-  
-  public static function getCategoryEntity( $id ){
-	return Category::getCategoryById( $id );
-  }
-  
-  /*test*/
 	public static function LinkFileToEntity( $entity_id, $fid, $type ){
-		$tags = null;
 		$file = \Drupal::entityManager()->getStorage('file')->load($fid);
 		\Drupal::service('file.usage')->add( $file, 'mall', $type, $entity_id );
 	}
-  /*eo test*/
+
+    public static function isLibraryPage() {
+        $request = \Drupal::request();
+        $uri = $request->getRequestUri();
+        if ( strpos( $uri, '/library') !== FALSE ) {
+            return TRUE;
+        }
+        else return FALSE;
+    }
+    public static function isLibraryCategoryPage() {
+        $request = \Drupal::request();
+        $uri = $request->getRequestUri();
+        if ( strpos( $uri, '/library/category') !== FALSE ) {
+            return TRUE;
+        }
+        else return FALSE;
+    }
+
+
 }
+

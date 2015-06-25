@@ -1,3 +1,5 @@
+
+
 <div class='library-admin-page'>
 	<div class='title'>Add a parent Category</div>	
     <div class='content-wrapper admin-category'>        
@@ -5,6 +7,7 @@
             <fieldset>
                 <!--temp commented due to css conflict <legend></legend>-->
                 <div class="row">
+                    <div class="caption">Category Name : </div>
                     <div class="value">
                         <div class="element">
                             <input type="text" name="name">
@@ -14,6 +17,7 @@
                 </div>
             </fieldset>
         </form>
+        {% include 'modules/library/templates/error.html.twig' %}
         <div class='list'>
 			<table class='library-table category main' cellpadding=0 cellspacing=0 width='100%'>
 				<tr class='header'>

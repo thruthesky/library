@@ -1,6 +1,7 @@
 <?php
 namespace Drupal\library\Controller;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\library\Library;
 use Drupal\library\x;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,41 +12,26 @@ use Drupal\library\Entity\Category;
 
 
 class CategoryController extends ControllerBase {	
-	public static function collection() {	
-      $categories = \Drupal::entityManager()->getStorage('library_category')->loadByProperties(['parent_id'=>0]);
-	  $groups = [];
-	  foreach( $categories as $c ){
-		$groups[$c->id()]['entity'] = $c;
-		$groups[$c->id()]['child_no'] = count( Category::loadAllChildren( $c->id() ) );
-	  }
-
-      $data = [
-        'groups' => $groups
-      ];
-	  
-      return [
-        '#theme' => x::getThemeName(),
-        '#data' => $data,
-      ];
+	public static function collection() {
+        return self::collectionTheme();
 	}
+    public static function collectionTheme() {
+        return [
+            //'#theme' => Library::getThemeName(),
+            '#theme' => 'library.category.admin',
+            '#data' => ['groups'=>Category::getTopNodes()]
+        ];
+    }
   public static function add() {
+      $parent_id  = Library::in('parent_id');
+      $re = Category::add($parent_id, Library::in('name', ''));
 
-    $parent_id  = x::in('parent_id');
-    $re = Category::add($parent_id, x::in('name', ''));
-
-	if( $parent_id == 0 ) $redirect_url = '/library/category/admin?';
+	if( $parent_id == 0 ) return self::collectionTheme();
 	else {
-      $group = Category::groupRoot($parent_id);
-      $redirect_url = '/library/category/admin/group/list?parent_id=' . $group->id();
-    }
-
-    if ( x::isError($re) ) {
-      $redirect_url .= "&error=$re[0]&message=$re[1]";
+      //$redirect_url = '/library/category/admin/group/list?parent_id=' . Category::getRootID($parent_id);
     }
 
 
-
-    return new RedirectResponse( $redirect_url );
   }
   
   public static function del() {
