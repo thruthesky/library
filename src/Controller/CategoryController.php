@@ -33,7 +33,7 @@ class CategoryController extends ControllerBase {
     $parent_id  = x::in('parent_id');
     $re = Category::add($parent_id, x::in('name', ''));
 
-	if( $parent_id == 0 ) $redirect_url = '/library/admin/category?';
+	if( $parent_id == 0 ) $redirect_url = '/library/category/admin?';
 	else {
       $group = Category::groupRoot($parent_id);
       $redirect_url = '/library/category/admin/group/list?parent_id=' . $group->id();
@@ -55,7 +55,7 @@ class CategoryController extends ControllerBase {
     }
     else {
       $is_root = Category::isRoot($id);
-	  if ( $is_root ) $redirect_url = '/library/admin/category';
+	  if ( $is_root ) $redirect_url = '/library/category/admin';
       else $redirect_url = '/library/category/admin/group/list?parent_id=' . Category::getRootID($id);
       Category::deleteAll($id );      
     }
@@ -67,7 +67,7 @@ class CategoryController extends ControllerBase {
 	$name =  \Drupal::request()->get('name');
    
 	
-	if( $id == 0 ) $redirect_url = '/library/admin/category';
+	if( $id == 0 ) $redirect_url = '/library/category/admin';
 	else{
 		$group = Category::groupRoot($id);
 		$redirect_url = '/library/category/admin/group/list?parent_id=' . $group->id();
