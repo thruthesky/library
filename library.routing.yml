@@ -1,3 +1,10 @@
+library:
+  path: '/library'
+  defaults:
+    _controller: Drupal\library\Controller\LibraryController::firstPage
+  requirements:
+    _permission: 'access content'
+
 library.category.admin:
   path: '/library/category/admin'
   defaults:
