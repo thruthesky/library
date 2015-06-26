@@ -23,7 +23,7 @@ function library_theme()
     ];
 		
   }
-  
+
   return $themes;
 }
 

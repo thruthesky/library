@@ -88,7 +88,7 @@ class Category extends ContentEntityBase implements CategoryInterface {
      * @return int|mixed|null|string
      */
     public static function add($parent_id, $name) {
-        if( empty( $name ) ) return self::ERROR_BLANK_CATEGORY_NAME;
+        if( empty( $name ) ) return Library::error('Empty Category Name', Language::string('library', 'empty_category_name'));
 
         $brothers = \Drupal::entityManager()->getStorage('library_category')->loadByProperties(['parent_id'=>$parent_id, 'name'=>$name]);
         if ( $brothers ) {
@@ -97,7 +97,7 @@ class Category extends ContentEntityBase implements CategoryInterface {
             if ( $parent ) $parent_name = $parent->label();
             else $parent_name = '';
 
-            return Library::error('Category Exist', Language::string('library', 'category_exist', ['name'=>$name]));
+            return Library::error('Category Exist', Language::string('library', 'category_exist', ['name'=>$name,'parent'=>$parent->name->value]));
         }
         else {
             $category = Category::create();
