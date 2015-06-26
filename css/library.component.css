@@ -190,7 +190,7 @@
 }
 
 .category-list .root-form-wrapper{
-    margin-bottom:20px;
+    
 }
 
 .category-list .category .label input[type='submit']{
@@ -201,8 +201,22 @@
     font-weight:normal;
 }
 
+/*error*/
+.error{	
+	text-align:center;
+}
+
+.error .row{	
+	padding:5px;
+	border:1px solid red;
+	color:red;
+	background-color:#f2f2f2;
+}
+/*eo error*/
+
 /*override*/
 fieldset{
 	border:0;
 }
 /*eo override*/
+
