@@ -33,6 +33,7 @@ function library_preprocess( &$variables, $hook )
     // Library::error(-999, \Drupal\library\Language::string('library', 'version')); // test
 
     $variables['error'] = Library::getError();
+    $variables['language'] = Library::getLanguage();
 
 
 

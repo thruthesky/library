@@ -18,13 +18,7 @@ class Language {
         if ( empty(self::$language) ) {
             $path_language = drupal_get_path('module', $module_name) . "/$module_name.language.yml";
             self::$language = Yaml::parse(file_get_contents($path_language));
-            $lns = \Drupal::request()->getLanguages();
-            if ( in_array('ko',$lns) ) {
-                $ln = 'ko';
-            }
-            else {
-                $ln = 'en';
-            }
+            $ln = Library::getLanguage();
             foreach( self::$language as $name => $value ) {
                 self::$text[$name] = $value[$ln];
             }

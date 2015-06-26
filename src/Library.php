@@ -317,7 +317,7 @@ class Library {
         return $user->id();
   }
 
-    
+
 	public static function LinkFileToEntity( $entity_id, $fid, $type ){
 		$file = \Drupal::entityManager()->getStorage('file')->load($fid);
 		\Drupal::service('file.usage')->add( $file, 'mall', $type, $entity_id );
@@ -338,6 +338,17 @@ class Library {
             return TRUE;
         }
         else return FALSE;
+    }
+
+    public static function getLanguage() {
+        $lns = \Drupal::request()->getLanguages();
+        if ( in_array('ko',$lns) ) {
+            $ln = 'ko';
+        }
+        else {
+            $ln = 'en';
+        }
+        return $ln;
     }
 
 
