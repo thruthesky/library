@@ -1,4 +1,4 @@
-default:
+category:
   version: 1.x
   js:
     js/library.js: {}

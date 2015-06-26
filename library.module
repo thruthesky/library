@@ -1,9 +1,6 @@
 <?php
+use Drupal\library\Library;
 use Symfony\Component\Yaml\Yaml;
-
-
-$error_information = [];
-
 
 if ( ! function_exists('di') ) {
     function di($obj)
@@ -26,15 +23,27 @@ function library_theme()
     ];
 		
   }
-  
+
   return $themes;
 }
 
-function library_preprocess( &$variables, $hook ){
-	$variables['#attached']['library'][] = 'library/default';
+function library_preprocess( &$variables, $hook )
+{
+
+    // Library::error(-999, \Drupal\library\Language::string('library', 'version')); // test
+
+    $variables['error'] = Library::getError();
+
+
+
+    if ( Library::isLibraryCategoryPage() ) {
+        $variables['#attached']['library'][] = 'library/category';
+    }
+
 }
 
 
+$error_information = [];
 function error($code, $info)
 {
     global $error_information;

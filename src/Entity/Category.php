@@ -4,6 +4,8 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\library\CategoryInterface;
+use Drupal\library\Language;
+use Drupal\library\Library;
 use Drupal\user\UserInterface;
 
 /**
@@ -29,20 +31,73 @@ class Category extends ContentEntityBase implements CategoryInterface {
 
 
     /**
+     *
+     * Returns all the children by a Category ID
+     *
+     * @note it does not return grand children. It is only an alias of loadChildren()
+     *
+     * @param $no
+     * @return array
+     * @see loadChildren
+     */
+    public static function getChildren( $no ){
+        return Category::loadChildren( $no );
+    }
+
+    /**
+     * Alias of loadAllChildren
+     * @param $no
+     * @return array
+     */
+    public static function getAllChildren( $no ){
+        return Category::loadAllChildren( $no );
+    }
+
+    /**
+     * Alias of groupRoot
+     * @param $no
+     * @return mixed
+     */
+    public static function getRoot( $no ){
+        return Category::groupRoot( $no );
+    }
+
+    /**
+     * Alias of loadParents
+     * @param $no
+     * @return mixed
+     */
+    public static function getParents( $no ){
+        return Category::loadParents( $no );
+    }
+
+    /**
+     * Alias of getCategoryById
+     * @param $id
+     * @return null|static
+     */
+    public static function getEntity( $id ){
+        return Category::getCategoryById( $id );
+    }
+
+
+
+    /**
      * @param $parent_id
      * @param $name
      * @return int|mixed|null|string
      */
     public static function add($parent_id, $name) {
-        if( empty( $name ) ) return self::ERROR_BLANK_CATEGORY_NAME;
+        if( empty( $name ) ) return Library::error('Empty Category Name', Language::string('library', 'empty_category_name'));
 
         $brothers = \Drupal::entityManager()->getStorage('library_category')->loadByProperties(['parent_id'=>$parent_id, 'name'=>$name]);
         if ( $brothers ) {
-            $brother = reset($brothers);
+            //$brother = reset($brothers);
             $parent = self::load($parent_id);
             if ( $parent ) $parent_name = $parent->label();
             else $parent_name = '';
-            return error(self::ERROR_CATEGORY_EXIST, ['name'=>$name, 'parent'=>$parent_name]);
+
+            return Library::error('Category Exist', Language::string('library', 'category_exist', ['name'=>$name,'parent'=>$parent->name->value]));
         }
         else {
             $category = Category::create();
@@ -78,9 +133,15 @@ class Category extends ContentEntityBase implements CategoryInterface {
         }
     }
 
-    /*
-    *Loads ALL children depending on the first $no
-    */
+
+    /**
+     *
+     * Returns all the children and descendants of a node.
+     *
+     * @param $no - category id whose children and descendants will be returned.
+     * @param int $depth
+     * @return array
+     */
     public static function loadAllChildren($no, $depth = 0) {//$delete temporary
         $categories = \Drupal::entityManager()->getStorage('library_category')->loadByProperties(['parent_id'=>$no]);
         $rows = [];
@@ -95,10 +156,14 @@ class Category extends ContentEntityBase implements CategoryInterface {
         return $rows;
     }
 
-    /*
-    *Loads only depth 0 children depending on the $no
-    */
-    public static function loadChildren($no, $depth = 0) {//$delete temporary
+    /**
+     *
+     * Load children. Children Only. Not grand children nor descendants.
+     *
+     * @param $no - category id
+     * @return array
+     */
+    public static function loadChildren($no) { // $delete temporary
         $categories = \Drupal::entityManager()->getStorage('library_category')->loadByProperties(['parent_id'=>$no]);
         $rows = [];
         foreach( $categories as $c ){
@@ -227,6 +292,27 @@ class Category extends ContentEntityBase implements CategoryInterface {
         return 0;
     }
 
+
+    /**
+     * Returns the top nodes whose parent_id is 0.
+     *
+     * @note Use this method to get all the first level nodes.
+     *
+     * @code
+     *  '#data' => ['groups'=>Category::getTopNodes()]
+     * @endcode
+     */
+    public static function getTopNodes()
+    {
+        $categories = \Drupal::entityManager()->getStorage('library_category')->loadByProperties(['parent_id'=>0]);
+        $groups = [];
+        foreach( $categories as $c ){
+            $groups[$c->id()]['entity'] = $c;
+            $groups[$c->id()]['no_of_children'] = count( Category::loadAllChildren( $c->id() ) );
+        }
+        return $groups;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -321,6 +407,7 @@ class Category extends ContentEntityBase implements CategoryInterface {
 
         return $fields;
     }
+
 
 
 }
