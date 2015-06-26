@@ -34,6 +34,7 @@ function library_preprocess( &$variables, $hook )
 
     $variables['error'] = Library::getError();
     $variables['language'] = Library::getLanguage();
+    $variables['myUid'] = Library::myUid();
 
 
 
