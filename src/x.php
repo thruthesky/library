@@ -408,19 +408,19 @@ class x {
   public static function getCategoryChildren( $no ){
 	return Category::loadChildren( $no );
   }
-  
+
   public static function getAllCategoryChildren( $no ){
 	return Category::loadAllChildren( $no );
   }
-  
+
   public static function getCategoryRoot( $no ){
 	return Category::groupRoot( $no );
   }
-  
+
   public static function getCategoryParents( $no ){
 	return Category::loadParents( $no );
   }
-  
+
   public static function getCategoryEntity( $id ){
 	return Category::getCategoryById( $id );
   }
