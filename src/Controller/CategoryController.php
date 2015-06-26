@@ -35,13 +35,13 @@ class CategoryController extends ControllerBase {
   }
   
   public static function del() {  
-	$data = [];
 	$id = Library::in('id');	
 	
     if ( Library::in('confirmed', '') != 'yes' && $children = Category::loadAllChildren($id) ) {
-		$data['category'] = Category::load($id);
-		$data['children'] = $children;
-		$theme = 'library.category.admin.delete.confirm';
+		return [            
+			'#theme' => 'library.category.admin.delete.confirm',
+			'#data' => [ 'category'=> Category::load($id), 'children'=> $children ]
+		];
     }
     else {
       $group_root = Category::groupRoot($id)->id();
@@ -53,11 +53,6 @@ class CategoryController extends ControllerBase {
 		return self::groupCollection( $group_root );
 	  }
     }
-	return [            
-		'#theme' => $theme,
-		'#data' => $data
-	];
-	
   }
   
   public static function update() {	
