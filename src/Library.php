@@ -246,7 +246,7 @@ class Library {
      * if( empty( $name ) ) return Library::error(-1, Language::string('library', 'empty_category_name'));
      * @endcode
      */
-  public static function error($code, $info = null) {
+  public static function error($code, $info = null) {  
       self::$error[$code] = $info;
       return $code;
   }

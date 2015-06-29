@@ -6,4 +6,21 @@ category_exist:
   ko: 카테고리 '#name'은 이미 존재합니다.
 empty_category_name:
   en: Categories cannot be blank space.
+
   ko: 카테고리는 공백이 될 수 없습니다.
+user_id_does_not_exist:
+  en: User ID does not exist in mall member.
+  ko: User ID does not exist in mall member.
+not_your_post:
+  en: The item you are trying to edit is not yours.
+  ko: The item you are trying to edit is not yours.
+not_logged_in:
+  en: Please log in first.
+  ko: Please log in first.
+not_your_account:
+  en: The account you are trying to edit is not yours.
+  ko: The account you are trying to edit is not yours.
+no_member_account:
+  en: You are not yet a mall member user.
+  ko: You are not yet a mall member user.
+
