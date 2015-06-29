@@ -1,4 +1,8 @@
 <?php
+/**
+ *
+ * https://docs.google.com/document/d/1koxonGQl20ER7HZqUfHd6L53YXT5fPlJxCEwrhRqsN4/edit#
+ */
 use Drupal\library\Library;
 use Symfony\Component\Yaml\Yaml;
 
@@ -10,6 +14,48 @@ if ( ! function_exists('di') ) {
         echo '</pre>';
     }
 }
+
+/**
+ * @param $k
+ * @param null $v
+ * @return mixed
+ *
+ * @code
+    state("user.jaeho.name", "JaeHo Song");
+    state("user.jaeho.email", "thruthesky@gmail.com");
+    state("user.jaeho.address", "Pampanga, Philippines");
+    state("user.thruthesky.name", "Thru, T. Sky");
+    state("user.thruthesky.address", "GimHae City, Republic of Korea");
+    $configs = getStateGroup('user');
+    print_r($configs);
+    $configs = getStateGroup('user.thruthesky');
+    print_r($configs);
+    echo "My name is: " . state("user.jaeho.name");
+ * @endcode
+ */
+function state($k, $v=null) {
+    if ( $v !== null ) return \Drupal::state()->set($k,$v);
+    else return \Drupal::state()->get($k);
+}
+function getStateGroup($name) {
+    $result = db_select('key_value')
+        ->fields(null, ['name','value'])
+        ->condition('collection', 'state')
+        ->condition('name', "$name%", 'LIKE')
+        ->execute();
+    $configs = [];
+    while( $row = $result->fetchAssoc() ) {
+        $configs[$row['name']] = unserialize($row['value']);
+    }
+    return $configs;
+}
+
+function debug_log($str)
+{
+    Library::log($str);
+}
+
+
 /*for automatic routing by #theme*/
 function library_theme()
 {
@@ -29,31 +75,18 @@ function library_theme()
 
 function library_preprocess( &$variables, $hook )
 {
+    // debug_log("library_preprocess($hook) begins");
 
     // Library::error(-999, \Drupal\library\Language::string('library', 'version')); // test
 
     $variables['error'] = Library::getError();
     $variables['language'] = Library::getLanguage();
     $variables['myUid'] = Library::myUid();
-
+    $variables['input'] = Library::input();
 
 
     if ( Library::isLibraryCategoryPage() ) {
         $variables['#attached']['library'][] = 'library/category';
     }
 
-}
-
-
-$error_information = [];
-function error($code, $info)
-{
-    global $error_information;
-    $error_information[$code] = $info;
-    return $code;
-}
-function get_error($code)
-{
-    global $error_information;
-    return $error_information[$code];
 }

@@ -6,4 +6,4 @@ category_exist:
   ko: 카테고리 '#name'은 이미 존재합니다.
 empty_category_name:
   en: Categories cannot be blank space.
-  ko: Categories cannot be blank space.
+  ko: 카테고리는 공백이 될 수 없습니다.
