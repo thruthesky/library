@@ -238,7 +238,7 @@ class Library {
      * return x::error(-1234, ['message'=>'This is error', 'name'=>'JaeHo Song']);
      * @endcode
      */
-  public static function error($code, $info = null) {
+  public static function error($code, $info = null) {  
       self::$error[$code] = $info;
       return $code;
   }
