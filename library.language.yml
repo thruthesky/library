@@ -19,3 +19,6 @@ not_logged_in:
 not_your_account:
   en: The account you are trying to edit is not yours.
   ko: The account you are trying to edit is not yours.
+no_member_account:
+  en: You are not yet a mall member user.
+  ko: You are not yet a mall member user.
