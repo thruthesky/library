@@ -648,5 +648,37 @@ class Library {
         else return [];
     }
 
+    public static function getSiteUrl() {
+        $protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';
+        return $protocol . '://' . self::domain_name();
+    }
+
+
+
+
+    /**
+     *
+     * Returns domain name in lower letter.
+     *
+     * @return null|string
+     *
+     *  Examples of return value.
+     *
+     *      - abc.1234.456.com
+     *      - www.abc.com
+     *      - abc.com
+     *
+     */
+    public static function domain_name()
+    {
+        if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+            $domain = $_SERVER['HTTP_HOST'];
+            $domain = strtolower($domain);
+            return $domain;
+        }
+        else return NULL;
+    }
+
+
 }
 
