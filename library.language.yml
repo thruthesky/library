@@ -8,8 +8,8 @@ empty_category_name:
   en: Categories cannot be blank space.
   ko: Categories cannot be blank space.
 user_id_does_not_exist:
-  en: User ID does not exist in mall member.
-  ko: User ID does not exist in mall member.
+  en: The User ID does not exist in mall member.
+  ko: The User ID does not exist in mall member.
 not_your_post:
   en: The item you are trying to edit is not yours.
   ko: The item you are trying to edit is not yours.
