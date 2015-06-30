@@ -6,7 +6,8 @@ category_exist:
   ko: 카테고리 '#name'은 이미 존재합니다.
 empty_category_name:
   en: Categories cannot be blank space.
-  ko: Categories cannot be blank space.
+
+  ko: 카테고리는 공백이 될 수 없습니다.
 user_id_does_not_exist:
   en: The User ID does not exist in mall member.
   ko: The User ID does not exist in mall member.
@@ -22,3 +23,4 @@ not_your_account:
 no_member_account:
   en: You are not yet a mall member user.
   ko: You are not yet a mall member user.
+
