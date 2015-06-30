@@ -641,6 +641,15 @@ class Library {
     }
 
 
+    /**
+     *
+     * It saves all the information coming from the FORM submit.
+     *
+     * @param $form_name
+     * @code
+     *      Library::saveFormSubmit('post_global_config');
+     * @endcode
+     */
     public static function saveFormSubmit($form_name) {
         self::setGroupConfig($form_name, Library::input());
     }
@@ -649,6 +658,14 @@ class Library {
             \Drupal::state()->set("$group_name.$k", $v);
         }
     }
+
+    /**
+     * @param $group_name
+     * @return array
+     * @code
+     * $variables['global_config'] = Library::getGroupConfig('post_global_config');
+     * @endcode
+     */
     public static function getGroupConfig($group_name) {
         $configs = getStateGroup($group_name);
         if ( $configs ) {
