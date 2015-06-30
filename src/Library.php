@@ -26,7 +26,8 @@ class Library {
   const ERROR_MUST_BE_AN_INTEGER = 'ERROR_MUST_BE_AN_INTEGER';
 
 
-    static $error = [];
+  static $error = [];
+  static $notice = [];
   static $input = [];
 
     static $months = [
@@ -246,13 +247,25 @@ class Library {
      * if( empty( $name ) ) return Library::error(-1, Language::string('library', 'empty_category_name'));
      * @endcode
      */
-  public static function error($code, $info = null) {  
-      self::$error[$code] = $info;
-      return $code;
-  }
+	public static function error($code, $info = null) {  
+	  self::$error[$code] = $info;
+	  return $code;
+	}
 
-    public static function getError() {
-        return self::$error;
+	public static function getError() {
+		return self::$error;
+	}
+	/*
+	*Works the same as error, just that it uses the static variable notice
+	*this will be used for successful notices e.g.) success on creating an account
+	*/
+	public static function notice($code, $info = null) {  
+	  self::$notice[$code] = $info;
+	  return $code;
+	}
+
+	public static function getNotice() {
+		return self::$notice;
     }
 
 
