@@ -128,8 +128,8 @@ function library_preprocess( &$variables, $hook )
      */
     if ( $variables['sub_theme'] ) { // yes.
         $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
-    }
 
+    }
 
 
     if ( Library::isLibraryCategoryPage() ) {
