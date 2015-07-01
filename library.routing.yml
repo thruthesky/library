@@ -1,7 +1,7 @@
 library:
   path: '/library'
   defaults:
-    _controller: Drupal\library\Controller\LibraryController::firstPage
+    _controller: Drupal\library\Controller\LibraryController::index
   requirements:
     _permission: 'access content'
 
@@ -56,3 +56,10 @@ library.category.admin.group.list:
   requirements:
     _permission: 'access content'
 
+
+library.theme:
+  path: '/library/theme'
+  defaults:
+    _controller: Drupal\library\Controller\LibraryController::theme
+  requirements:
+    _permission: 'access content'

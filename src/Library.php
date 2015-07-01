@@ -53,7 +53,7 @@ class Library {
     //$uri = substr($uri, 1);
     $ex = explode('?', $uri, 2);
       $uri = $ex[0];
-	if ( $uri == '/library' or $uri == '/library/' ) return 'library.first-page'; // this is the entry key of routing.yml
+	//if ( $uri == '/library' or $uri == '/library/' ) return 'library.first-page'; // this is the entry key of routing.yml
 	
     $uri = trim($uri, '/ ');
     $uri = str_replace('/', '.', $uri);
@@ -653,7 +653,16 @@ class Library {
     public static function saveFormSubmit($form_name) {
         self::setGroupConfig($form_name, Library::input());
     }
+
+    /**
+     *
+     * 'x.' is attached at the beginning to avoid the conflict of 'keys' of drupal.
+     *
+     * @param $group_name
+     * @param $arr
+     */
     public static function setGroupConfig($group_name, $arr) {
+        $group_name = "x.$group_name";
         foreach( $arr as $k => $v ) {
             \Drupal::state()->set("$group_name.$k", $v);
         }
@@ -667,6 +676,7 @@ class Library {
      * @endcode
      */
     public static function getGroupConfig($group_name) {
+        $group_name = "x.$group_name";
         $configs = getStateGroup($group_name);
         if ( $configs ) {
             foreach( $configs as $k => $v ) {

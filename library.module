@@ -9,6 +9,8 @@
 use Drupal\library\Library;
 use Symfony\Component\Yaml\Yaml;
 
+define('MAX_DOMAIN', 10);
+
 if ( ! function_exists('di') ) {
     function di($obj)
     {
@@ -40,7 +42,19 @@ function state($k, $v=null) {
     if ( $v !== null ) return \Drupal::state()->set($k,$v);
     else return \Drupal::state()->get($k);
 }
+
+
+/**
+ * @param $name
+ * @return array
+ *
+ * @note It caches in memory.
+ *      - so, no matter how many times you get a group of config, it will only return the same as the first return.
+ *      - It is okay to call this function as many times as you want.
+ */
 function getStateGroup($name) {
+    global $_getStateGroup;
+    if ( isset($_getStateGroup[$name]) ) return $_getStateGroup[$name];
     $result = db_select('key_value')
         ->fields(null, ['name','value'])
         ->condition('collection', 'state')
@@ -50,8 +64,10 @@ function getStateGroup($name) {
     while( $row = $result->fetchAssoc() ) {
         $configs[$row['name']] = unserialize($row['value']);
     }
-    return $configs;
+    $_getStateGroup[$name] = $configs;
+    return $_getStateGroup[$name];
 }
+
 
 function debug_log($str)
 {
@@ -82,11 +98,37 @@ function library_preprocess( &$variables, $hook )
 
     // Library::error(-999, \Drupal\library\Language::string('library', 'version')); // test
 
+
+
+
+
     $variables['error'] = Library::getError();
     $variables['language'] = Library::getLanguage();
     if ( Library::getLanguage() == 'ko' ) $variables['ko'] = true;
     $variables['myUid'] = Library::myUid();
     $variables['input'] = Library::input();
+
+    /**
+     * Get 'theme' and 'sub_theme'
+     */
+    $variables['theme'] = Drupal::theme()->getActiveTheme()->getName() ;
+    $variables['dir_theme'] = Drupal::theme()->getActiveTheme()->getPath();
+    $variables['sub_theme'] = null;
+    $config = Library::getGroupConfig('theme');
+    $domain = Library::domain_name();
+    for ( $i = 1; $i <= MAX_DOMAIN; $i ++ ) {
+        if ( strpos($config["domain$i"], $domain) !== false ) {
+            $variables['sub_theme'] = $config["theme$i"];
+            break;
+        }
+    }
+    /**
+     * Is the theme uses sub theme?
+     */
+    if ( $variables['sub_theme'] ) { // yes.
+        $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
+    }
+
 
 
     if ( Library::isLibraryCategoryPage() ) {
