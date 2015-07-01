@@ -247,9 +247,10 @@ class Library {
      * if( empty( $name ) ) return Library::error(-1, Language::string('library', 'empty_category_name'));
      * @endcode
      */
-	public static function error($code, $info = null) {  
-	  self::$error[$code] = $info;
-	  return $code;
+	public static function error($code=0, $info = null) {
+        if ( empty($code) ) return;
+        self::$error[$code] = $info;
+        return $code;
 	}
 
 	public static function getError() {
@@ -631,6 +632,11 @@ class Library {
         return $page_no;
     }
 
+    /**
+     * @param $variables
+     * @param null $error_html_twig
+     *
+     */
     public static function parseErrorMessage(&$variables, $error_html_twig=null) {
         if ( empty($error_html_twig) ) $error_html_twig = "modules/library/templates/error.html.twig";
         $template = @file_get_contents($error_html_twig);

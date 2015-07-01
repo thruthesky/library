@@ -100,6 +100,8 @@ function library_preprocess( &$variables, $hook )
 
 
 
+    
+
 
 
     $variables['error'] = Library::getError();
@@ -117,9 +119,11 @@ function library_preprocess( &$variables, $hook )
     $config = Library::getGroupConfig('theme');
     $domain = Library::domain_name();
     for ( $i = 1; $i <= MAX_DOMAIN; $i ++ ) {
-        if ( strpos($config["domain$i"], $domain) !== false ) {
-            $variables['sub_theme'] = $config["theme$i"];
-            break;
+        if ( ! empty($config["domain$i"]) ) {
+            if ( strpos($config["domain$i"], $domain) !== false ) {
+                $variables['sub_theme'] = $config["theme$i"];
+                break;
+            }
         }
     }
     /**
@@ -127,7 +131,6 @@ function library_preprocess( &$variables, $hook )
      */
     if ( $variables['sub_theme'] ) { // yes.
         $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
-
     }
 
 
@@ -135,4 +138,15 @@ function library_preprocess( &$variables, $hook )
         $variables['#attached']['library'][] = 'library/category';
     }
 
+}
+
+
+
+/**
+ * Implements hook_library_info_build().
+ */
+function library_libraries_info() {
+    $s = "library_library_info() begins";
+    echo $s;
+    Library::log($s);
 }
