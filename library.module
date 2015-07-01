@@ -94,6 +94,7 @@ function library_theme()
 
 function library_preprocess( &$variables, $hook )
 {
+
     // debug_log("library_preprocess($hook) begins");
 
     // Library::error(-999, \Drupal\library\Language::string('library', 'version')); // test
@@ -137,7 +138,6 @@ function library_preprocess( &$variables, $hook )
     if ( Library::isLibraryCategoryPage() ) {
         $variables['#attached']['library'][] = 'library/category';
     }
-
 }
 
 
