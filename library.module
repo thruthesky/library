@@ -127,14 +127,21 @@ function library_preprocess( &$variables, $hook )
             }
         }
     }
+
+    $variables['url_site'] = Library::getSiteUrl();
+    $variables['url_theme'] = $variables['url_site'] . '/' . $variables['dir_theme'];
+
     /**
      * Is the theme uses sub theme?
      */
     if ( $variables['sub_theme'] ) { // yes.
         $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
+        $variables['url_sub_theme'] = $variables['url_theme'] . '/templates/' . $variables['sub_theme'];
     }
 
 
+
+    $variables['#attached']['library'][] = 'library/global-styling';
     if ( Library::isLibraryCategoryPage() ) {
         $variables['#attached']['library'][] = 'library/category';
     }
@@ -145,8 +152,10 @@ function library_preprocess( &$variables, $hook )
 /**
  * Implements hook_library_info_build().
  */
-function library_libraries_info() {
-    $s = "library_library_info() begins";
-    echo $s;
+/**
+ * Implements hook_library_info_build().
+ */
+function library_library_info_build() {
+    $s = "library_library_info_build() begins";
     Library::log($s);
 }

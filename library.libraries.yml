@@ -1,12 +1,22 @@
-category:
+global-styling:
   version: 1.x
   js:
-    js/library.js: {}
+    js/global.js: {}
   dependencies:
     - core/jquery
   css:
     theme:
-      css/library.base.css: {}
-      css/library.layout.css: {}
-      css/library.component.css: {}
-      css/library.state.css: {}
+      css/global.base.css: {}
+      css/global.layout.css: {}
+      css/global.component.css: {}
+      css/global.state.css: {}
+
+category:
+  version: 1.x
+  js:
+    js/category.js: {}
+  dependencies:
+    - core/jquery
+  css:
+    theme:
+      css/category.component.css: {}
