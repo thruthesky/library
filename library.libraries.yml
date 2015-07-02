@@ -8,6 +8,7 @@ global-styling:
     theme:
       css/global.base.css: {}
       css/global.layout.css: {}
+      css/global.component.grid.css: {}
       css/global.component.css: {}
       css/global.state.css: {}
 

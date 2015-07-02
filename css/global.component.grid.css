@@ -1,0 +1,140 @@
+/** ----------------------- GRID - two column, section.grid ------------------------ **/
+section.grid:after,
+section.grid3:after,
+section.grid4:after {
+    display:block;
+    clear:both;
+    content:'';
+}
+
+section.grid {
+    width:100%;
+    word-break: break-all;
+}
+section.grid .a {
+    overflow:hidden;
+    width:100%;
+}
+section.grid .b {
+    overflow:hidden;
+    width:100%;
+}
+
+@media all and ( min-width: 480px ) { /** 480px and above */
+    section.grid {
+        word-break: normal;
+    }
+    section.grid .a,
+    section.grid .b
+    {
+        width:50%;
+    }
+    section.grid .a {
+        float:left;
+    }
+}
+/** ----------------------- GRID - three column, section.grid3 ------------------------ **/
+.grid3 {
+    display:block;
+    width:100%;
+    word-break: break-all;
+}
+.grid3 .a,
+.grid3 .b,
+.grid3 .c {
+    overflow:hidden;
+    width:100%;
+}
+
+
+.grid3 .content {
+    position:relative;
+    display:block;
+    padding:5px 0;
+    box-sizing: border-box;
+}
+.grid3 .content:after {
+    display:block;
+    content:'';
+    clear:both;
+}
+
+@media all and ( min-width: 320px ) { /** 320px and above */
+
+}
+@media all and ( min-width: 480px ) { /** 480px and above */
+    .grid3 .a {
+        width:100%;
+    }
+    .grid3 .b,
+    .grid3 .c {
+        width:50%;
+    }
+    .grid3 .b {
+        float:left;
+    }
+    /*
+        .best .grid3 .b .content {
+            margin-right:5px;
+        }
+        .best .grid3 .c .content {
+            margin-left:5px;
+        }
+    */
+}
+@media all and ( min-width: 640px ) { /** 640px and above */
+    .grid3 .a,
+    .grid3 .b,
+    .grid3 .c {
+        width:33.33%;
+    }
+    .grid3 .a {
+        float:left;
+    }
+}
+@media all and ( min-width: 800px ) { /** 800px and above */
+    .grid3 {
+        word-break: normal;
+    }
+}
+
+/** ----------------------- GRID - four column, section.grid4 ------------------------ **/
+
+.grid4 {
+    display:block;
+    width:100%;
+    word-break: break-all;
+}
+
+.grid4 > .content {
+    position:relative;
+    display:block;
+    padding:5px 0;
+    box-sizing: border-box;
+}
+.grid4 > .content:after {
+    display:block;
+    content:'';
+    clear:both;
+}
+
+
+@media all and ( min-width: 480px ) { /** 480px and above */
+    .grid4 > .content > div {
+        width:50%;
+    }
+    .grid4 .a,
+    .grid4 .b,
+    .grid4 .c,
+    .grid4 .d {
+        float:left;
+    }
+}
+
+
+@media all and ( min-width: 800px ) { /** 800px and above */
+    .grid4 > .content > div {
+        width:25%;
+    }
+}
+
