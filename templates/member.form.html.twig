@@ -1,0 +1,27 @@
+{% set member = data.member %}
+{% import dir_macro ~ '/html.html.twig' as html %}
+
+<form>
+    <fieldset>
+        <legend>Registration Form</legend>
+        <input type="hidden" name="mode" value="submit">
+        {% if member %}
+            {{ html.row('username', member.name.value, 'User ID') }}
+        {% else %}
+            {{ html.input({'type':'text','name':'username', 'id':'register-username', 'class':'username', 'value':'', 'label':'User ID', 'placeholder':'User ID'}) }}
+            {{ html.input({'type':'password','name':'password', 'id':'register-password', 'class':'password', 'value':'', 'label':'Password', 'placeholder':'Password'}) }}
+        {% endif %}
+        {{ html.input({'type':'email','name':'mail', 'id':'register-email', 'class':'email', 'value':member.mail.value, 'label':'Email', 'placeholder':'Email'}) }}
+        {{
+            html.radio('gender', [
+        {'id':'generM', 'label': 'Male', 'value': 'M', 'default': member.extra.gender },
+        {'id':'generF', 'label': 'Female', 'value': 'F', 'default': member.extra.gender }
+            ])
+        }}
+        {{ html.select_month({'name':'month', 'label':'Month', 'default': member.extra.month }) }}
+        {{ html.select_number({'name':'day', 'from':1, 'to':31, 'label':'Day', 'default':member.extra.day}) }}
+        {{ html.select_number({'name':'year', 'from':2008, 'to':1950, 'label':'Year', 'default':member.extra.year}) }}
+        <input type="submit" role="button" value="UPDATE">
+        <a href="#" role="button">CANCEL</a>
+    </fieldset>
+</form>

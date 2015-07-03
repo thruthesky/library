@@ -1,0 +1,33 @@
+<?php
+function library_schema()
+{
+    $schema['library_config'] = array(
+        'description' => 'Keys and values of configuration',
+        'fields' => array(
+            'group_id'     => array('type' => 'varchar','length'=>64,'not null'=>TRUE, 'default'=>''),
+            'code'     => array('type' => 'varchar','length'=>128,'not null'=>TRUE, 'default'=>''),
+            'value'     => array('type' => 'text'),
+        ),
+        'primary key' => array('group_id', 'code'),
+    );
+    $schema['library_member_browser_id'] = array(
+        'description' => 'Record member browser id',
+        'fields' => array(
+            'user_id'     => array('type' => 'int','unsigned'=>TRUE,'not null'=>TRUE, 'default'=>0),
+            'browser_id'     => array('type' => 'varchar', 'default'=>'', 'length' => 32),
+            'stamp'     => array('type' => 'int','unsigned'=>TRUE,'not null'=>TRUE, 'default'=>0),
+            ),
+        'primary key' => array('user_id', 'browser_id'),
+        'indexes' => array(
+            'browser_id' => array('browser_id'),
+            ),
+        );
+    return $schema;
+}
+function library_install()
+{
+}
+function library_uninstall()
+{
+    //db_drop_table('mall_member');
+}

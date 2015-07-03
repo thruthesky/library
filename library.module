@@ -101,9 +101,6 @@ function library_preprocess( &$variables, $hook )
 
 
 
-    
-
-
 
     $variables['error'] = Library::getError();
     $variables['language'] = Library::getLanguage();
@@ -130,6 +127,8 @@ function library_preprocess( &$variables, $hook )
 
     $variables['url_site'] = Library::getSiteUrl();
     $variables['url_theme'] = $variables['url_site'] . '/' . $variables['dir_theme'];
+
+    $variables['dir_macro'] = "modules/library/templates/macros";
 
     /**
      * Is the theme uses sub theme?

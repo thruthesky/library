@@ -63,3 +63,29 @@ library.theme:
     _controller: Drupal\library\Controller\LibraryController::theme
   requirements:
     _permission: 'access content'
+
+
+member.register:
+  path: '/member/register'
+  defaults:
+    _controller: Drupal\library\Controller\MemberController::register
+  requirements:
+    _permission: 'access content'
+library.member.login:
+  path: '/member/login'
+  defaults:
+    _controller: Drupal\library\Controller\MemberController::login
+  requirements:
+    _permission: 'access content'
+library.member.logout:
+  path: '/member/logout'
+  defaults:
+    _controller: Drupal\library\Controller\MemberController::logout
+  requirements:
+    _permission: 'access content'
+member.update:
+  path: '/member/update'
+  defaults:
+    _controller: Drupal\library\Controller\MemberController::update
+  requirements:
+    _permission: 'access content'
