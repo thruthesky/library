@@ -1,0 +1,40 @@
+{% macro row(name, value, label) %}
+    <div class='row {{ name }}'>
+        <label for="{{ name }}" class='caption'>{{ label | default( name ) }}</label>
+        <div class='text'>{{ value | e }}</div>
+    </div>
+{% endmacro %}
+{% macro input(d) %}
+    <div class='row data-set {{ d.class | default(d.name) }}'>
+        <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
+        <div class='text'><input type="{{ d.type | default('text') }}" id="{{ d.id | default(d.name) }}" name="{{ d.name }}" value="{{ d.value | e }}" placeholder="{{ d.placeholder | e  }}"></div>
+    </div>
+{% endmacro %}
+{% macro radio(name, data) %}
+    <div class='row data-set {{ name }}'>
+        {% for d in data %}
+            <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( name ) }}</label>
+            <div class='text'><input type="radio" id="{{ d.id | default(d.name)  }}" name="{{ name }}" value="{{ d.value | e }}"{{ d.value == d.default ? ' checked=1' }}></div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+{% macro select_number(d) %}
+    <div class='row data-set {{ d.name }}'>
+        <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
+        <select id="{{ d.id | default(d.name) }}" name="{{ d.name }}">
+            {% for i in d.from .. d.to %}
+                <option value="{{ i }}"{{ d.default == i ? ' selected=1' }}>{{ i }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro %}
+{% macro select_month(d) %}
+    <div class='row data-set {{ d.name }}'>
+        <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
+        <select id={{ d.id | default(d.name) }} name="{{ d.name }}">
+            {% for m in 1..12 %}
+                <option value="{{ m }}"{{ d.default == m ? ' selected=1' }}>{{ date('2012-' ~ m ~ '-01') |date('F') }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro %}

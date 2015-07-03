@@ -1,0 +1,11 @@
+{% import dir_macro ~ '/html.html.twig' as html %}
+<form>
+    <fieldset>
+        <legend>Member Login</legend>
+        <input type="hidden" name="mode" value="submit">
+        {{ html.input({'type':'text','name':'username', 'id':'register-username', 'class':'username', 'value':'', 'label':'User ID', 'placeholder':'User ID'}) }}
+        {{ html.input({'type':'password','name':'password', 'id':'register-password', 'class':'password', 'value':'', 'label':'Password', 'placeholder':'Password'}) }}
+        <input type="submit" role="button" value="LOGIN">
+        <a href="#" role="button">CANCEL</a>
+    </fieldset>
+</form>
