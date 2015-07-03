@@ -151,7 +151,7 @@ class Category extends ContentEntityBase implements CategoryInterface {
             $rows[ $id ]['depth'] = $depth;
             $returns = self::loadAllChildren( $id, $depth + 1 );
             if( $returns ) $rows = $rows + $returns;
-            $rows[ $id ]['child_no'] = count( $returns );
+            $rows[ $id ]['no_of_children'] = count( $returns );
         }
         return $rows;
     }
@@ -308,7 +308,7 @@ class Category extends ContentEntityBase implements CategoryInterface {
         $groups = [];
         foreach( $categories as $c ){
             $groups[$c->id()]['entity'] = $c;
-            $groups[$c->id()]['no_of_children'] = count( Category::loadAllChildren( $c->id() ) );
+            $groups[$c->id()]['no_of_children'] = count( Category::loadAllChildren( $c->id() ) );			
         }
         return $groups;
     }
