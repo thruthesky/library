@@ -6,6 +6,7 @@
  */
 namespace Drupal\library;
 use Drupal\user\Entity\User;
+use Drupal\user\UserAuth;
 
 
 /**
@@ -332,9 +333,12 @@ class Library {
      *
      * Log into the user account.
      *
+     * @note it does not check password.
+     *
      * @param $username
      * @return mixed
      *      - User ID if success.
+     *      - 0 on failure.
      */
     public static function loginUser($username) {
         $user = user_load_by_name($username);
@@ -345,6 +349,25 @@ class Library {
         else return 0;
     }
 
+
+    /**
+     *
+     * It only checks if the password is right or not.
+     * @note it does not login.
+     * @param $name
+     * @param $password
+     * @return mixed
+     *
+     *      - User ID on success.
+     *      - FALSE on failure
+     */
+    public static function checkPassword($name, $password)
+    {
+        $userStorage = \Drupal::entityManager();
+        $passwordChecker = \Drupal::service('password');
+        $auth = new UserAuth($userStorage, $passwordChecker);
+        return $auth->authenticate($name, $password);
+    }
 
     public static function LinkFileToEntity( $entity_id, $fid, $type ){
         $file = \Drupal::entityManager()->getStorage('file')->load($fid);

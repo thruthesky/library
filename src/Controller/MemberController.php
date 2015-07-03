@@ -26,13 +26,22 @@ class MemberController extends ControllerBase {
     }
 
     public static function login() {
-        return new RedirectResponse('/');
-    }
-    public static function logout() {
-        return new RedirectResponse('/');
+        if ( Library::isFromSubmit() ) {
+            $r = \Drupal::request();
+            if ( Library::checkPassword($r->get('username'), $r->get('password')) ) {
+                Library::loginUser($r->get('username'));
+                return new RedirectResponse('/');
+            }
+            else {
+                Library::error(-4119, "Login failed. Please check your ID and Password.");
+            }
+        }
+        return [
+            '#theme' => Library::getThemeName(),
+            '#data' => [],
+        ];
     }
     public static function update() {
-
         return [
             '#theme' => Library::getThemeName(),
             '#data' => [

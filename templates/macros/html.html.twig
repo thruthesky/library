@@ -7,7 +7,7 @@
 {% macro input(d) %}
     <div class='row data-set {{ d.class | default(d.name) }}'>
         <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
-        <div class='text'><input type="text" id="{{ d.id | default(d.name) }}" name="{{ d.name }}" value="{{ d.value | e }}" placeholder="{{ d.placeholder | e  }}"></div>
+        <div class='text'><input type="{{ d.type | default('text') }}" id="{{ d.id | default(d.name) }}" name="{{ d.name }}" value="{{ d.value | e }}" placeholder="{{ d.placeholder | e  }}"></div>
     </div>
 {% endmacro %}
 {% macro radio(name, data) %}
