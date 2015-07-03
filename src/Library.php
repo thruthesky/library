@@ -19,7 +19,7 @@ use Drupal\user\UserAuth;
 class Library {
 
     const ERROR_PLEASE_LOGIN_FIRST = 'ERROR_PLEASE_LOGIN_FIRST';
-    const ERROR_USER_EXISTS = 'ERROR_USER_EXISTS';
+    const ERROR_USER_EXISTS = -1401;
 
     const ERROR_NOT_YOUR_ID = 'ERROR_NOT_YOUR_ID';
     const ERROR_NOT_YOUR_POST = 'ERROR_NOT_YOUR_POST';
@@ -31,6 +31,7 @@ class Library {
     static $notice = [];
     static $input = [];
 
+    static $browser_id=null;
     static $months = [
         '1'=>'January',
         '2'=>'February',
@@ -301,7 +302,7 @@ class Library {
     public static function registerDrupalUser($username, $password, $mail) {
 
         $user = user_load_by_name($username);
-        if ( $user ) return x::ERROR_USER_EXISTS;
+        if ( $user ) return self::ERROR_USER_EXISTS;
         $id = $username;
         $lang = "en";
         $timezone = "Asia/Manila";
@@ -668,7 +669,8 @@ class Library {
         if ( empty($template) ) return;
         $error = self::getError();
         $markup = \Drupal::service('twig')->renderInline($template, ['error'=>$error]);
-        $variables['error_message'] =  $markup;
+        if ( empty($variables['error_message']) ) $variables['error_message'] =  $markup;
+        else $variables['error_message'] .=  $markup;
     }
 
 
@@ -748,6 +750,49 @@ class Library {
             return $domain;
         }
         else return NULL;
+    }
+
+    public static function getBrowserID() {
+        if ( self::$browser_id  ) return self::$browser_id;
+        self::$browser_id = self::get_cookie('bid');
+        if ( empty(self::$browser_id) ) {
+            self::$browser_id = self::uniqueID();
+            self::set_cookie('bid', self::$browser_id);
+        }
+        return self::$browser_id;
+    }
+
+    private static function uniqueID() {
+        return md5(uniqid(rand(), true));
+    }
+
+    public static function recordBrowserID($browser_id) {
+        if ( $uid = self::login() ) {
+            if ( self::existBrowserID($uid, $browser_id) ) {
+
+            }
+            else {
+                self::saveBrowserID($uid, $browser_id);
+            }
+        }
+        return;
+    }
+
+    private static function existBrowserID($uid, $browser_id) {
+        $result = db_select('library_member_browser_id')
+            ->fields(null, ['browser_id'])
+            ->condition('user_id', $uid)
+            ->condition('browser_id', $browser_id)
+            ->execute();
+        $row = $result->fetchAssoc(\PDO::FETCH_NUM);
+        if ( empty($row['browser_id']) ) return false;
+        else return true;
+    }
+
+    private static function saveBrowserID($uid, $browser_id) {
+        db_insert('library_member_browser_id')
+            ->fields(['user_id'=>$uid, 'browser_id'=>$browser_id])
+            ->execute();
     }
 
 

@@ -100,6 +100,9 @@ function library_preprocess( &$variables, $hook )
     // Library::error(-999, \Drupal\library\Language::string('library', 'version')); // test
 
 
+    $browser_id = Library::getBrowserID();
+    Library::recordBrowserID($browser_id);
+
 
 
     $variables['error'] = Library::getError();
@@ -137,6 +140,9 @@ function library_preprocess( &$variables, $hook )
         $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
         $variables['url_sub_theme'] = $variables['url_theme'] . '/templates/' . $variables['sub_theme'];
     }
+
+
+    Library::parseErrorMessage($variables);
 
 
 

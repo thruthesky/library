@@ -15,7 +15,6 @@ function library_schema()
         'fields' => array(
             'user_id'     => array('type' => 'int','unsigned'=>TRUE,'not null'=>TRUE, 'default'=>0),
             'browser_id'     => array('type' => 'varchar', 'default'=>'', 'length' => 32),
-            'stamp'     => array('type' => 'int','unsigned'=>TRUE,'not null'=>TRUE, 'default'=>0),
             ),
         'primary key' => array('user_id', 'browser_id'),
         'indexes' => array(
