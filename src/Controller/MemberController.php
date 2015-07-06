@@ -51,6 +51,7 @@ class MemberController extends ControllerBase {
         ];
     }
     public static function update() {
+        Member::updateMemberFormSubmit(Library::myUsername());
         return [
             '#theme' => Library::getThemeName(),
             '#data' => [

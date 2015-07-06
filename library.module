@@ -140,7 +140,8 @@ function library_preprocess( &$variables, $hook )
     if ( $variables['sub_theme'] ) { // yes.
         $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
         $variables['url_sub_theme'] = $variables['url_theme'] . '/templates/' . $variables['sub_theme'];
-        include "$variables[dir_sub_theme]/init.php";
+        $init = "$variables[dir_sub_theme]/init.php";
+        if ( file_exists($init) ) include $init;
     }
 
 

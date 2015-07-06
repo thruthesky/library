@@ -871,5 +871,9 @@ class Library {
         }
     }
 
+    public static function myUsername() {
+        return \Drupal::currentUser()->getAccount()->getUsername();
+    }
+
 }
 
