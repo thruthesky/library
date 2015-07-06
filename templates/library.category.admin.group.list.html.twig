@@ -1,6 +1,9 @@
 {% set group = data.group %}
 <div class='library-admin-page'>	
-	<div class='title'>Sub categories of {{ group.name.value }}</div>		
+	<div class='title'>Sub categories of <span>[ {{ group.name.value }} ]</span></div>
+	<div class='page-control'>
+		<a href='/library/category/admin'>Root Categories</a>
+	</div>
 	<div class='content-wrapper category-list'>		
 		<div class='root-form-wrapper'>			
 			 <form class='form-add' action='/library/category/admin/group/add'>
@@ -34,7 +37,7 @@
 					</div>
 				</td>
 				<td>
-					{{ c.child_no }}
+					{{ c.no_of_children }}
 				</td>
 				<td>					
 					<div class='button-wrapper'>
