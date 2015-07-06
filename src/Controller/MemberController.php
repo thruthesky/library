@@ -6,6 +6,9 @@ use Drupal\library\Library;
 use Drupal\library\Member;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/*added by benjamin for mall register*/
+use Drupal\mall\x;
+
 
 class MemberController extends ControllerBase {
     public static function register() {
@@ -22,15 +25,23 @@ class MemberController extends ControllerBase {
     }
 
     public static function register_submit() {
+		//Q: is update not yet working??
         $r = \Drupal::request();
+		
         $username = $r->get('username');
-        $re = Library::registerDrupalUser($username, $r->get('password'), $r->get('mail'));
-        if ( $re == Library::ERROR_USER_EXISTS ) {
+        $re = Library::registerDrupalUser($username, $r->get('password'), $r->get('mail'));	
+		
+        if ( $re == Library::ERROR_USER_EXISTS ) {			
             Library::error('User ID exists.', Language::string('library', 'user_name_already_taken', ['user_name'=>$username]));
             return self::registerPage();
         }
+		
         Library::loginUser($username);
-        Member::updateMemberFormSubmit($username);
+        Member::updateMemberFormSubmit($username);		
+		
+		/*mall member*/
+		x::MallMemberRegister( $re );
+		/*eo mall member*/		
         return new RedirectResponse('/');
     }
 
