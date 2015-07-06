@@ -800,11 +800,19 @@ class Library {
         return \Drupal::request()->server->get('REMOTE_ADDR');
     }
 
-    public static function files_by_module_id($module, $id) {
+    /**
+     * @param $module
+     * @param $id
+     * @param string $order_field
+     * @param string $order_direction
+     * @return array
+     */
+    public static function files_by_module_id($module, $id, $order_field='fid', $order_direction='DESC') {
         $result = db_select('file_usage')
             ->fields(null, ['fid', 'module', 'type'])
             ->condition('module', $module)
             ->condition('id', $id)
+            ->orderBy($order_field,$order_direction)
             ->execute();
         $files = [];
         while ( $row = $result->fetchAssoc(\PDO::FETCH_ASSOC) ) {
@@ -820,12 +828,21 @@ class Library {
     }
 
 
-    public static function files_by_module_type_id($module, $type, $id) {
+    /**
+     * @param $module
+     * @param $type
+     * @param $id
+     * @param string $order_field
+     * @param string $order_direction
+     * @return array
+     */
+    public static function files_by_module_type_id($module, $type, $id, $order_field='fid', $order_direction='DESC') {
         $result = db_select('file_usage')
             ->fields(null, ['fid', 'module', 'type'])
             ->condition('module', $module)
             ->condition('type', $type)
             ->condition('id', $id)
+            ->orderBy($order_field,$order_direction)
             ->execute();
         $files = [];
         while ( $row = $result->fetchAssoc(\PDO::FETCH_ASSOC) ) {

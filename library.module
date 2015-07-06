@@ -116,6 +116,7 @@ function library_preprocess( &$variables, $hook )
      */
     $variables['theme'] = Drupal::theme()->getActiveTheme()->getName() ;
     $variables['dir_theme'] = Drupal::theme()->getActiveTheme()->getPath();
+    $variables['dir_templates'] = $variables['dir_theme'] . '/templates';
     $variables['sub_theme'] = null;
     $config = Library::getGroupConfig('theme');
     $domain = Library::domain_name();
@@ -139,6 +140,7 @@ function library_preprocess( &$variables, $hook )
     if ( $variables['sub_theme'] ) { // yes.
         $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
         $variables['url_sub_theme'] = $variables['url_theme'] . '/templates/' . $variables['sub_theme'];
+        include "$variables[dir_sub_theme]/init.php";
     }
 
 
