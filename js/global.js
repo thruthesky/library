@@ -6,26 +6,25 @@ $(function(){
         var callback = $(this).attr('callback');
 
         if ( typeof callback == 'function' ) {
-            console.log("callback: " + callback);
+            //console.log("callback: " + callback);
             ajax_api(url, callback);
         }
         else if ( typeof selector != 'undefined' && selector != '' ) {
-            console.log("selector: " + selector);
-            ajax_api(url, function(re){
-                var data;
+            //console.log("selector: " + selector);
+            ajax_api(url, function(data){
                 try {
-                    data = JSON.parse(re);
-                    if ( typeof data.error != 'undefined' ) alert(data.error);
+                    if ( typeof data.error != 'undefined' ) alert('Error: ' + data.error);
+                    else if ( typeof data.message != 'undefined' ) alert(data.message);
                     else $(selector).html(data.result);
                 }
                 catch (e) {
                     console.log("JSON.parse() error");
-                    console.log(re);
+                    console.log(data);
                 }
             });
         }
         else {
-            console.log("no callback and no selecotr");
+            //console.log("no callback and no selecotr");
         }
     });
 });
@@ -53,9 +52,15 @@ function ajax_api( url, callback_function )
 {
     console.log('ajax_api:' + url);
     var promise = $.ajax( { url : url } );
-    promise.done( function( o ) {
-        console.log("promise.done() : callback function : " + callback_function);
-        callback_function( o )
+    promise.done( function( re ) {
+        //console.log("promise.done() : callback function : " + callback_function);
+        try {
+            var data = JSON.parse(re);
+            callback_function( data )
+        }
+        catch (e) {
+            alert(re);
+        }
     });
 
     promise.fail( function( re ) {

@@ -1,7 +1,7 @@
-{% macro row(name, value, label) %}
-    <div class='row {{ name }}'>
-        <label for="{{ name }}" class='caption'>{{ label | default( name ) }}</label>
-        <div class='text'>{{ value | e }}</div>
+{% macro row(d) %}
+    <div class='row {{ d.class | default(d.name) }}'>
+        <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
+        <div class='text'>{{ d.value | raw }}</div>
     </div>
 {% endmacro %}
 {% macro input(d) %}
@@ -10,11 +10,21 @@
         <div class='text'><input type="{{ d.type | default('text') }}" id="{{ d.id | default(d.name) }}" name="{{ d.name }}" value="{{ d.value | e }}" placeholder="{{ d.placeholder | e  }}"></div>
     </div>
 {% endmacro %}
-{% macro radio(name, data) %}
+{% macro textarea(d) %}
+<div class="row data-set {{ d.class | default(d.name) }}">
+    <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
+    <div class="text"><textarea id="{{ d.id | default(d.name) }}" name="{{ d.name }}" placeholder="{{ d.placeholder | e  }}">{{ d.value | e }}</textarea></div>
+</div>
+{% endmacro %}
+{% macro radio(name, caption, data) %}
     <div class='row data-set {{ name }}'>
+        <div class="caption">{{ caption }}</div>
         {% for d in data %}
-            <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( name ) }}</label>
-            <div class='text'><input type="radio" id="{{ d.id | default(d.name)  }}" name="{{ name }}" value="{{ d.value | e }}"{{ d.value == d.default ? ' checked=1' }}></div>
+            <div class='text'>
+                <input type="radio" id="{{ d.id | default(d.name)  }}" name="{{ name }}" value="{{ d.value | e }}"{{ d.value == d.default ? ' checked=1' }}>
+                <label for="{{ d.id | default(d.name) }}">{{ d.label | default( name ) }}</label>
+            </div>
+
         {% endfor %}
     </div>
 {% endmacro %}

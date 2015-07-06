@@ -5,6 +5,7 @@
  *
  */
 namespace Drupal\library;
+use Drupal\file\Entity\File;
 use Drupal\user\Entity\User;
 use Drupal\user\UserAuth;
 
@@ -795,6 +796,63 @@ class Library {
             ->execute();
     }
 
+    public static function clientIP() {
+        return \Drupal::request()->server->get('REMOTE_ADDR');
+    }
+
+    public static function files_by_module_id($module, $id) {
+        $result = db_select('file_usage')
+            ->fields(null, ['fid', 'module', 'type'])
+            ->condition('module', $module)
+            ->condition('id', $id)
+            ->execute();
+        $files = [];
+        while ( $row = $result->fetchAssoc(\PDO::FETCH_ASSOC) ) {
+            $file = File::load($row['fid']);
+            $name = $file->filename->value;
+            $name = urldecode($name);
+            $file->dname = $name;
+            $file->type = $row['type'];
+            $file->module = $row['module'];
+            $files[] = $file;
+        }
+        return $files;
+    }
+
+
+    public static function files_by_module_type_id($module, $type, $id) {
+        $result = db_select('file_usage')
+            ->fields(null, ['fid', 'module', 'type'])
+            ->condition('module', $module)
+            ->condition('type', $type)
+            ->condition('id', $id)
+            ->execute();
+        $files = [];
+        while ( $row = $result->fetchAssoc(\PDO::FETCH_ASSOC) ) {
+            $file = File::load($row['fid']);
+            $name = $file->filename->value;
+            $name = urldecode($name);
+            $file->dname = $name;
+            $file->type = $row['type'];
+            $file->module = $row['module'];
+            $files[] = $file;
+        }
+        return $files;
+    }
+    public static function file_usage($fid) {
+        $result = db_select('file_usage')
+            ->condition('fid', $fid)
+            ->execute();
+        $result->fetchAssoc(\PDO::FETCH_ASSOC);
+    }
+
+    public static function file_delete($fid) {
+        if ( empty($fid) || ! is_numeric($fid) ) return;
+        $file = File::load($fid);
+        if ( $file ) {
+            $file->delete();
+        }
+    }
 
 }
 

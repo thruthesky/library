@@ -13,7 +13,7 @@
         {% endif %}
         {{ html.input({'type':'email','name':'mail', 'id':'register-email', 'class':'email', 'value':member.mail.value, 'label':'Email', 'placeholder':'Email'}) }}
         {{
-            html.radio('gender', [
+            html.radio('gender', 'Gender', [
         {'id':'generM', 'label': 'Male', 'value': 'M', 'default': member.extra.gender },
         {'id':'generF', 'label': 'Female', 'value': 'F', 'default': member.extra.gender }
             ])
