@@ -8,11 +8,14 @@ empty_category_name:
   en: Categories cannot be blank space.
   ko: 카테고리는 공백이 될 수 없습니다.
 user_id_does_not_exist:
-  en: The User ID does not exist in mall member.
-  ko: The User ID does not exist in mall member.
+  en: The User ID does not appear to be registered in our system.
+  ko: The User ID does not appear to be registered in our system.
 not_your_post:
   en: The item you are trying to edit is not yours.
   ko: The item you are trying to edit is not yours.
+invalid_item_id:
+  en: The item ID that you are trying to view does not exist.
+  ko: The item ID that you are trying to view does not exist.
 not_logged_in:
   en: Please log in first.
   ko: Please log in first.
