@@ -9,6 +9,8 @@
 use Drupal\library\Library;
 use Symfony\Component\Yaml\Yaml;
 
+use Drupal\library\Entity\Category;
+
 define('MAX_DOMAIN', 10);
 
 if ( ! function_exists('di') ) {
@@ -153,6 +155,14 @@ function library_preprocess( &$variables, $hook )
     if ( Library::isLibraryCategoryPage() ) {
         $variables['#attached']['library'][] = 'library/category';
     }
+	
+	/*if $hook*/
+	//to avoid multiple calls
+	if( $hook == 'page' ){
+		//on page, we will should be able to access the categories for the menu bar
+		$variables['data']['category_entity_list'] = Category::loadAllCategories();
+	}
+	/*eo if $hook*/
 }
 
 
