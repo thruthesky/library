@@ -38,10 +38,7 @@ class MemberController extends ControllerBase {
 		
         Library::loginUser($username);
         Member::updateMemberFormSubmit($username);		
-		
-		/*mall member*/
-		x::MallMemberRegister( $re );
-		/*eo mall member*/		
+
         return new RedirectResponse('/');
     }
 
