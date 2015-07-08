@@ -1,0 +1,14 @@
+{% macro get(no, value) %}
+    {% set bar = value | split(',') %}
+    {% if bar | length > 1 %}
+        {% if not no %}
+            {{ bar[0] }}
+        {% elseif no == 1 %}
+            {{ bar[1] }}
+        {% elseif no == 2 %}
+            {{ bar[2] }}
+        {% endif %}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endmacro %}

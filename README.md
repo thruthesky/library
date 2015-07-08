@@ -26,3 +26,5 @@ https://docs.google.com/document/d/1koxonGQl20ER7HZqUfHd6L53YXT5fPlJxCEwrhRqsN4/
 * /member/logout
 * /member/update
 
+# 이용안내
+

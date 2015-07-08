@@ -101,6 +101,10 @@ function library_preprocess( &$variables, $hook )
 
     // Library::error(-999, \Drupal\library\Language::string('library', 'version')); // test
 
+    //Library::log(\Drupal::service('twig')->getFilters());
+    //Library::log(\Drupal::service('twig')->getFunctions());
+
+
 
     $browser_id = Library::getBrowserID();
     Library::recordBrowserID($browser_id);

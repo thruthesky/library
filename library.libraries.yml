@@ -4,6 +4,7 @@ global-styling:
     js/global.js: {}
   dependencies:
     - core/jquery
+    - core/underscore
   css:
     theme:
       css/global.base.css: {}
