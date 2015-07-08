@@ -117,6 +117,8 @@ function library_preprocess( &$variables, $hook )
     $variables['myUid'] = Library::myUid();
     $variables['input'] = Library::input();
 
+    //di('library.module');
+
     /**
      * Get 'theme' and 'sub_theme'
      */
