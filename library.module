@@ -113,7 +113,10 @@ function library_preprocess( &$variables, $hook )
 
     $variables['error'] = Library::getError();
     $variables['language'] = Library::getLanguage();
-    if ( Library::getLanguage() == 'ko' ) $variables['ko'] = true;
+
+    if (  $variables['language']== 'ko' ) $variables['ko'] = 1;
+    else $variables['ko'] = 0;
+
     $variables['myUid'] = Library::myUid();
     $variables['input'] = Library::input();
 
