@@ -143,7 +143,7 @@ function library_preprocess( &$variables, $hook ) {
     $domain = Library::domain_name();
     for ($i = 1; $i <= MAX_DOMAIN; $i++) {
         if (!empty($config["domain$i"])) {
-            if (strpos($config["domain$i"], $domain) !== FALSE) {
+            if (strpos($domain, $config["domain$i"]) !== FALSE) {
                 $variables['sub_theme'] = $config["theme$i"];
                 break;
             }
