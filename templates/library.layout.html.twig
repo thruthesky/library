@@ -1,14 +1,12 @@
 {% import dir_macro ~ '/html.html.twig' as html  %}
-<section class="library">
-    <div class="{{ data.page }}">
-        {% if data.page %}
-            {% if data.error %}
-                {{ html.error(data) }}
-            {% else %}
-                {% include 'modules/library/templates/library.' ~ data.page ~ '.html.twig' %}
-            {% endif %}
+<section class="library {{ data.page }}">
+    {% if data.page %}
+        {% if data.error %}
+            {{ html.error(data) }}
         {% else %}
-            {{ ko ? '잘못된 접근 : 페이지 값이 없습니다.' : 'Wrong access : No page code.' }}
+            {% include 'modules/library/templates/library.' ~ data.page ~ '.html.twig' %}
         {% endif %}
-    </div>
+    {% else %}
+        {{ ko ? '잘못된 접근 : 페이지 값이 없습니다.' : 'Wrong access : No page code.' }}
+    {% endif %}
 </section>

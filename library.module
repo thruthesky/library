@@ -121,6 +121,12 @@ function library_preprocess( &$variables, $hook ) {
         $variables['ko'] = 0;
     }
 
+
+
+
+
+
+
     $variables['myUid'] = Library::myUid();
     $variables['input'] = Library::input();
 
@@ -197,3 +203,4 @@ function library_library_info_build() {
     $s = "library_library_info_build() begins";
     Library::log($s);
 }
+
