@@ -7,10 +7,11 @@ use Drupal\library\Library;
 
 class LibraryController extends ControllerBase {
     public static function index() {
-        $data = [];
+        $data = ['page'=>'index'];
         Library::checkAdminLogin($data);
+
         return [
-            '#theme' => Library::getThemeName(),
+            '#theme' => Library::theme(),
             '#data' => $data,
         ];
     }
@@ -20,11 +21,11 @@ class LibraryController extends ControllerBase {
             Library::saveFormSubmit('theme');
         }
         $config = Library::getGroupConfig('theme');
-        $data = [];
+        $data = ['page'=>'theme'];
         $data['theme_config'] = $config;
         Library::checkAdminLogin($data);
         return [
-            '#theme' => Library::getThemeName(),
+            '#theme' => Library::theme(),
             '#data' => $data,
         ];
     }

@@ -80,18 +80,22 @@ function debug_log($str)
 /*for automatic routing by #theme*/
 function library_theme()
 {
-  $routes = Yaml::parse(file_get_contents(drupal_get_path('module', 'library').'/library.routing.yml'));   
-  
-  $themes = [];
-  foreach($routes as $name => $info) {
-    $themes[$name] = [
-      'variables' => [ 'data' => null],
-      'template' => $name
-    ];
-		
-  }
+    $routes = Yaml::parse(file_get_contents(drupal_get_path('module', 'library').'/library.routing.yml'));
 
-  return $themes;
+    $themes = [];
+    foreach($routes as $name => $info) {
+        $themes[$name] = [
+            'variables' => [ 'data' => null],
+            'template' => $name
+        ];
+    }
+
+
+    $themes['library.layout'] = [
+        'variables' => [ 'data' => null ],
+        'template' => 'library.layout'
+    ];
+    return $themes;
 }
 
 function library_preprocess( &$variables, $hook ) {

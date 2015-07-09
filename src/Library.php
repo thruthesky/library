@@ -51,17 +51,15 @@ class Library {
 
     public static function getThemeName() {
         $uri = \Drupal::request()->getRequestUri();
-
-        // di($uri);
-        //$uri = substr($uri, 1);
         $ex = explode('?', $uri, 2);
         $uri = $ex[0];
-        //if ( $uri == '/library' or $uri == '/library/' ) return 'library.first-page'; // this is the entry key of routing.yml
-
         $uri = trim($uri, '/ ');
         $uri = str_replace('/', '.', $uri);
         $uri = strtolower($uri);
         return $uri;
+    }
+    public static function theme() {
+        return 'library.layout';
     }
 
     public static function getThemeFileName() {
