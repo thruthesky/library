@@ -5,14 +5,15 @@ use Drupal\library\Library;
 
 
 
-class LibraryController extends ControllerBase {	
-	public static function index() {
-	  $data = [];
-      return [
-        '#theme' => Library::getThemeName(),
-        '#data' => $data,
-      ];
-	}
+class LibraryController extends ControllerBase {
+    public static function index() {
+        $data = [];
+        Library::checkAdminLogin($data);
+        return [
+            '#theme' => Library::getThemeName(),
+            '#data' => $data,
+        ];
+    }
 
     public static function theme() {
         if ( Library::isFromSubmit() ) {
@@ -20,11 +21,11 @@ class LibraryController extends ControllerBase {
         }
         $config = Library::getGroupConfig('theme');
         $data = [];
+        $data['theme_config'] = $config;
+        Library::checkAdminLogin($data);
         return [
             '#theme' => Library::getThemeName(),
-            '#data' => [
-                'theme_config' => $config,
-            ],
+            '#data' => $data,
         ];
     }
 }

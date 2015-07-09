@@ -94,8 +94,7 @@ function library_theme()
   return $themes;
 }
 
-function library_preprocess( &$variables, $hook )
-{
+function library_preprocess( &$variables, $hook ) {
 
     // debug_log("library_preprocess($hook) begins");
 
@@ -105,17 +104,18 @@ function library_preprocess( &$variables, $hook )
     //Library::log(\Drupal::service('twig')->getFunctions());
 
 
-
     $browser_id = Library::getBrowserID();
     Library::recordBrowserID($browser_id);
 
 
-
-    $variables['error'] = Library::getError();
     $variables['language'] = Library::getLanguage();
 
-    if (  $variables['language']== 'ko' ) $variables['ko'] = 1;
-    else $variables['ko'] = 0;
+    if ($variables['language'] == 'ko') {
+        $variables['ko'] = 1;
+    }
+    else {
+        $variables['ko'] = 0;
+    }
 
     $variables['myUid'] = Library::myUid();
     $variables['input'] = Library::input();
@@ -125,15 +125,15 @@ function library_preprocess( &$variables, $hook )
     /**
      * Get 'theme' and 'sub_theme'
      */
-    $variables['theme'] = Drupal::theme()->getActiveTheme()->getName() ;
+    $variables['theme'] = Drupal::theme()->getActiveTheme()->getName();
     $variables['dir_theme'] = Drupal::theme()->getActiveTheme()->getPath();
     $variables['dir_templates'] = $variables['dir_theme'] . '/templates';
-    $variables['sub_theme'] = null;
+    $variables['sub_theme'] = NULL;
     $config = Library::getGroupConfig('theme');
     $domain = Library::domain_name();
-    for ( $i = 1; $i <= MAX_DOMAIN; $i ++ ) {
-        if ( ! empty($config["domain$i"]) ) {
-            if ( strpos($config["domain$i"], $domain) !== false ) {
+    for ($i = 1; $i <= MAX_DOMAIN; $i++) {
+        if (!empty($config["domain$i"])) {
+            if (strpos($config["domain$i"], $domain) !== FALSE) {
                 $variables['sub_theme'] = $config["theme$i"];
                 break;
             }
@@ -148,31 +148,38 @@ function library_preprocess( &$variables, $hook )
     /**
      * Is the theme uses sub theme?
      */
-    if ( $variables['sub_theme'] ) { // yes.
+    if ($variables['sub_theme']) { // yes.
         $variables['dir_sub_theme'] = $variables['dir_theme'] . '/templates/' . $variables['sub_theme'];
         $variables['url_sub_theme'] = $variables['url_theme'] . '/templates/' . $variables['sub_theme'];
         $init = "$variables[dir_sub_theme]/init.php";
-        if ( file_exists($init) ) include $init;
+        if (file_exists($init)) {
+            include $init;
+        }
     }
-
-
-    Library::parseErrorMessage($variables);
-
 
 
     $variables['#attached']['library'][] = 'library/global-styling';
-    if ( Library::isLibraryCategoryPage() ) {
-        $variables['#attached']['library'][] = 'library/category';
+    if (Library::isLibraryPage()) {
+        if (Library::isLibraryCategoryPage()) {
+            $variables['#attached']['library'][] = 'library/category';
+        }
     }
-	
-	/*if $hook*/
-	//to avoid multiple calls
-	if( $hook == 'page' ){
-		//on page, we will should be able to access the categories for the menu bar
-		$variables['data']['category_entity_list'] = Category::loadAllCategories();
-	}
-	/*eo if $hook*/
+
+    /*if $hook*/
+    //to avoid multiple calls
+    if ($hook == 'page') {
+        //on page, we will should be able to access the categories for the menu bar
+        $variables['data']['category_entity_list'] = Category::loadAllCategories();
+    }
+    /*eo if $hook*/
+
+
+
+
+    $variables['error'] = Library::getError();
+    Library::parseErrorMessage($variables);
 }
+
 
 
 

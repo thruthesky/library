@@ -11,10 +11,10 @@
     </div>
 {% endmacro %}
 {% macro textarea(d) %}
-<div class="row data-set {{ d.class | default(d.name) }}">
-    <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
-    <div class="text"><textarea id="{{ d.id | default(d.name) }}" name="{{ d.name }}" placeholder="{{ d.placeholder | e  }}">{{ d.value | e }}</textarea></div>
-</div>
+    <div class="row data-set {{ d.class | default(d.name) }}">
+        <label for="{{ d.id | default(d.name) }}" class='caption'>{{ d.label | default( d.name ) }}</label>
+        <div class="text"><textarea id="{{ d.id | default(d.name) }}" name="{{ d.name }}" placeholder="{{ d.placeholder | e  }}">{{ d.value | e }}</textarea></div>
+    </div>
 {% endmacro %}
 {% macro radio(name, caption, data) %}
     <div class='row data-set {{ name }}'>
@@ -47,4 +47,15 @@
             {% endfor %}
         </select>
     </div>
+{% endmacro %}
+
+{% macro error(data) %}
+    {% if data.error %}
+        <section class="error">
+            <h3>{{ data.error_title | default('Error') }}</h3>
+            <div class="row">
+                <div class="message">{{ data.error }}</div>
+            </div>
+        </section>
+    {% endif %}
 {% endmacro %}

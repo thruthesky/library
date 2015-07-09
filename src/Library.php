@@ -243,6 +243,8 @@ class Library {
 
 
     /**
+     *
+     * @deprecated
      * @param $code
      * @param array $info
      * @return array
@@ -256,6 +258,12 @@ class Library {
         return $code;
     }
 
+
+    /**
+     *
+     * @deprecated
+     * @return array
+     */
     public static function getError() {
         return self::$error;
     }
@@ -660,6 +668,9 @@ class Library {
     }
 
     /**
+     *
+     *
+     * @deprecated
      * @param $variables
      * @param null $error_html_twig
      *
@@ -873,6 +884,13 @@ class Library {
 
     public static function myUsername() {
         return \Drupal::currentUser()->getAccount()->getUsername();
+    }
+
+    public static function checkAdminLogin(&$data) {
+        if ( ! Library::isAdmin() ) {
+            $data['error_title'] = "Admin Permission Required";
+            $data['error'] = "You are not admin. To access this page, You need to login as admin.";
+        }
     }
 
 }

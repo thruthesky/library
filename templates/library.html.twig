@@ -1,3 +1,9 @@
+{% import dir_macro ~ '/html.html.twig' as html  %}
 <h1>Welcome to Library Module</h1>
-&gt; <a href='/library/theme'>Theme</a><br>
-&gt; <a href='/library/category/admin'>Category</a><br>
+{% if data.error %}
+    {{ html.error(data) }}
+{% else %}
+    &gt; <a href='/library/theme'>Theme</a><br>
+    &gt; <a href='/library/category/admin'>Category</a><br>
+{% endif %}
+
