@@ -13,21 +13,24 @@ use Drupal\mall\x;
 class MemberController extends ControllerBase {
     public static function register() {
         if ( Library::isFromSubmit() ) return self::register_submit();
-        return self::registerPage();
+        return self::registerTheme();
     }
 
-    private static function registerPage()
-    {
+    private static function registerTheme($data=null) {
         return [
             '#theme' => 'member.register',
-            '#data' => [],
+            '#data' => $data,
         ];
     }
 
     public static function register_submit() {
-		//Q: is update not yet working??
+
+        if ( $error = self::checkRegisterSubmit() ) {
+            return self::registerTheme( [ 'error' => $error ] );
+        }
+
         $r = \Drupal::request();
-		
+
         $username = $r->get('username');
         $re = Library::registerDrupalUser($username, $r->get('password'), $r->get('mail'));	
 		
@@ -67,6 +70,16 @@ class MemberController extends ControllerBase {
                 'member' => Member::load(Library::myUid())
             ],
         ];
+    }
+
+    private static function checkRegisterSubmit() {
+        $request = \Drupal::request();
+        $error = null;
+        if ( ! $request->get('password') ) $error = "Input Password.";
+        else if ( $request->get('password') != $request->get('confirm_password') ) $error = "Password and Password-confirm does not match. Please re-type your password.";
+        else if ( ! $request->get('mail') ) $error = "Input Email.";
+        else if ( ! $request->get('mobile') ) $error = "Input Mobile Number.";
+        return $error;
     }
 
 }
