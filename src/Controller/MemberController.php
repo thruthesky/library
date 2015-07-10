@@ -43,6 +43,7 @@ class MemberController extends ControllerBase {
     }
 
     public static function login() {
+        $data = [];
         if ( Library::isFromSubmit() ) {
             $r = \Drupal::request();
             if ( Library::checkPassword($r->get('username'), $r->get('password')) ) {
@@ -50,12 +51,12 @@ class MemberController extends ControllerBase {
                 return new RedirectResponse('/');
             }
             else {
-                Library::error(-4119, "Login failed. Please check your ID and Password.");
+                $data['error'] = "Login failed. Please check your ID and Password.";
             }
         }
         return [
             '#theme' => Library::getThemeName(),
-            '#data' => [],
+            '#data' => $data,
         ];
     }
     public static function update() {

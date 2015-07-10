@@ -1,5 +1,6 @@
 {% import dir_macro ~ '/html.html.twig' as html %}
-<form>
+{{ html.error(data) }}
+<form method="post">
     <fieldset>
         <legend>Member Login</legend>
         <input type="hidden" name="mode" value="submit">
