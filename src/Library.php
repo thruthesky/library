@@ -8,6 +8,7 @@ namespace Drupal\library;
 use Drupal\file\Entity\File;
 use Drupal\user\Entity\User;
 use Drupal\user\UserAuth;
+use Symfony\Component\Yaml\Yaml;
 
 
 /**
@@ -889,6 +890,45 @@ class Library {
             $data['error_title'] = "Admin Permission Required";
             $data['error'] = "You are not admin. To access this page, You need to login as admin.";
         }
+    }
+
+
+    /**
+     * @param $path
+     * @return array
+     *
+     * @code
+     *
+     * $path = "$variables[dir_sub_theme]/$variables[sub_theme].yml";
+    $yml = Library::loadYml($path);
+    di($yml['sitename']);
+     *
+     * @endcode
+     */
+    public static function loadYml($path) {
+        $yml = Yaml::parse(file_get_contents($path));
+        return $yml;
+    }
+
+    /**
+     * @return array
+     *
+     * @note "http://drupalkorea.org/post/drupal-freetalk/638?jj" will return below
+     * @code
+     * Array
+    (
+    [0] => post
+    [1] => drupal-freetalk
+    [2] => 638
+    )
+     * @endcode
+     *
+     */
+    public static function getUriSegment() {
+        $uri = \Drupal::request()->getRequestUri();
+        list($uri, $trash) = explode('?', $uri);
+        $uri = trim($uri, '/');
+        return explode('/', $uri);
     }
 
 }

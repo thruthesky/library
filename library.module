@@ -130,7 +130,10 @@ function library_preprocess( &$variables, $hook ) {
     $variables['myUid'] = Library::myUid();
     $variables['input'] = Library::input();
 
-    //di('library.module');
+
+
+    $variables['url_site'] = Library::getSiteUrl();
+    $variables['dir_macro'] = "modules/library/templates/macros";
 
     /**
      * Get 'theme' and 'sub_theme'
@@ -139,21 +142,23 @@ function library_preprocess( &$variables, $hook ) {
     $variables['dir_theme'] = Drupal::theme()->getActiveTheme()->getPath();
     $variables['dir_templates'] = $variables['dir_theme'] . '/templates';
     $variables['sub_theme'] = NULL;
+
+
+
     $config = Library::getGroupConfig('theme');
     $domain = Library::domain_name();
     for ($i = 1; $i <= MAX_DOMAIN; $i++) {
         if (!empty($config["domain$i"])) {
             if (strpos($domain, $config["domain$i"]) !== FALSE) {
                 $variables['sub_theme'] = $config["theme$i"];
+                $variables['sub_theme_sitename'] = $config["sitename$i"];
                 break;
             }
         }
     }
 
-    $variables['url_site'] = Library::getSiteUrl();
-    $variables['url_theme'] = $variables['url_site'] . '/' . $variables['dir_theme'];
 
-    $variables['dir_macro'] = "modules/library/templates/macros";
+    $variables['url_theme'] = $variables['url_site'] . '/' . $variables['dir_theme'];
 
     /**
      * Is the theme uses sub theme?
@@ -165,7 +170,23 @@ function library_preprocess( &$variables, $hook ) {
         if (file_exists($init)) {
             include $init;
         }
+        if ( $hook == 'html' ) {
+            $variables['head_title'] = [];
+            $variables['head_title'][] = $variables['sub_theme_sitename'];
+
+            $variables['url_favicon'] = "$variables[url_sub_theme]/favicon.ico";
+        }
     }
+
+
+
+    $type = theme_get_setting('favicon.mimetype');
+    $page['#attached']['html_head_link'][][] = array(
+        'rel' => 'shortcut icon',
+        'href' => 'https://www.philgo.com/theme/philgo/favicon.ico',
+        'type' => $type,
+    );
+
 
 
     $variables['#attached']['library'][] = 'library/global-styling';
@@ -183,6 +204,12 @@ function library_preprocess( &$variables, $hook ) {
     }
     /*eo if $hook*/
 
+
+
+    $request = \Drupal::request();
+    if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+        $route->setDefault('_title', 'H');
+    }
 
 
 
