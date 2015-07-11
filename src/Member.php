@@ -23,6 +23,10 @@ class Member {
     }
     public static function updateMemberFormSubmit($uid) {
         $input = Library::input();
+		
+		//just for confirm password
+		if( !empty( $input['confirm_password'] ) ) unset( $input['confirm_password'] );
+		
         foreach( $input as $k => $v ) {
             if ( $k == 'password' ) continue;
             self::set($uid, $k, $v);
