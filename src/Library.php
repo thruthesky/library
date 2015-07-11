@@ -763,6 +763,11 @@ class Library {
         else return NULL;
     }
 
+    public static function domainNameWithoutWWW() {
+        $domain = self::domain_name();
+        return str_replace("www.", '', $domain);
+    }
+
     public static function getBrowserID() {
         if ( self::$browser_id  ) return self::$browser_id;
         self::$browser_id = self::get_cookie('bid');
@@ -929,6 +934,10 @@ class Library {
         list($uri, $trash) = explode('?', $uri);
         $uri = trim($uri, '/');
         return explode('/', $uri);
+    }
+
+    public static function userAgent() {
+        return isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : null;
     }
 
 }
