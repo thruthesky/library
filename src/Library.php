@@ -240,32 +240,6 @@ class Library {
         user_cookie_delete($k);
     }
 
-
-    /**
-     *
-     * @deprecated
-     * @param $code
-     * @param array $info
-     * @return array
-     * @code
-     * if( empty( $name ) ) return Library::error(-1, Language::string('library', 'empty_category_name'));
-     * @endcode
-     */
-    public static function error($code=0, $info = null) {
-        if ( empty($code) ) return;
-        self::$error[$code] = $info;
-        return $code;
-    }
-
-
-    /**
-     *
-     * @deprecated
-     * @return array
-     */
-    public static function getError() {
-        return self::$error;
-    }
     /*
     *Works the same as error, just that it uses the static variable notice
     *this will be used for successful notices e.g.) success on creating an account
@@ -293,8 +267,52 @@ class Library {
      */
     public static function isError($re) {
         if ( is_numeric($re) && $re < 0 ) return true;
+        else if ( is_array($re) ) {
+            if ( isset($re[0]) && $re[0] < 0 ) return true;
+        }
         return false;
     }
+
+    /**
+     * @param $re
+     * @return null
+     */
+    public static function readError($re) {
+        if ( is_array($re) && $re[0] < 0 ) {
+            return isset($re[1]) ? $re[1] : null;
+        }
+        return null;
+    }
+
+
+    /**
+     *
+     * @deprecated
+     * @param $code
+     * @param array $info
+     * @return array
+     * @code
+     * if( empty( $name ) ) return Library::error(-1, Language::string('library', 'empty_category_name'));
+     * @endcode
+     */
+    public static function error($code=0, $info = null) {
+        if ( empty($code) ) return;
+        self::$error[$code] = $info;
+        return $code;
+    }
+
+
+
+
+    /**
+     *
+     * @deprecated
+     * @return array
+     */
+    public static function getError() {
+        return self::$error;
+    }
+
 
 
     /*------------*/
@@ -931,14 +949,15 @@ class Library {
      */
     public static function getUriSegment() {
         $uri = \Drupal::request()->getRequestUri();
-        list($uri, $trash) = explode('?', $uri);
-        $uri = trim($uri, '/');
+        $arr = explode('?', $uri);
+        $uri = trim($arr[0], '/');
         return explode('/', $uri);
     }
 
     public static function userAgent() {
         return isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : null;
     }
+
 
 }
 

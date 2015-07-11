@@ -2,3 +2,13 @@ section.error {
     padding:1em;
     box-sizing: border-box;
 }
+
+section.error .go-back b {
+    display:block;
+    margin-top:1em;
+    padding:1em;
+    background-color:white;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
