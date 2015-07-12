@@ -210,13 +210,17 @@ function library_preprocess( &$variables, $hook ) {
     }
 
 
-
+    /**
+     * @todo ?? what is it?
+     */
+    /*
     $type = theme_get_setting('favicon.mimetype');
     $page['#attached']['html_head_link'][][] = array(
         'rel' => 'shortcut icon',
         'href' => 'https://www.philgo.com/theme/philgo/favicon.ico',
         'type' => $type,
     );
+    */
 
 
 
