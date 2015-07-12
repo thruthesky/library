@@ -25,15 +25,21 @@ class Member {
         $input = Library::input();
 		
 		//just for confirm password
-		if( !empty( $input['confirm_password'] ) ) unset( $input['confirm_password'] );
-		
+        if( ! empty( $input['password'] ) ) unset( $input['password'] );
+		if( ! empty( $input['confirm_password'] ) ) unset( $input['confirm_password'] );
+
+        $domain = self::get($uid, 'domain');
+        if ( empty($domain) ) $input['domain'] = $input['domain'] = Library::domainNameWithoutWWW();
+
         foreach( $input as $k => $v ) {
-            if ( $k == 'password' ) continue;
             self::set($uid, $k, $v);
         }
     }
     public static function set($user_id, $code, $value) {
         Config::set("user.$user_id", $code,$value);
+    }
+    public static function get($user_id, $code) {
+        return Config::get("user.$user_id", $code);
     }
 
     private static function extra($username) {

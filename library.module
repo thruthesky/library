@@ -127,7 +127,13 @@ function library_preprocess( &$variables, $hook ) {
 
 
 
+    /** @deprecated */
     $variables['myUid'] = Library::myUid();
+
+    /** @note use my_uid */
+    $variables['my_uid'] = Library::myUid();
+    $variables['my_name'] = Library::myName();
+
     $variables['input'] = Library::input();
 
 
@@ -145,6 +151,10 @@ function library_preprocess( &$variables, $hook ) {
 
 
 
+
+    $variables = array_merge( $variables, Library::getSubsiteInformation() );
+
+    /*
     $config = Library::getGroupConfig('theme');
     $domain = Library::domain_name();
     for ($i = 1; $i <= MAX_DOMAIN; $i++) {
@@ -152,10 +162,14 @@ function library_preprocess( &$variables, $hook ) {
             if (strpos($domain, $config["domain$i"]) !== FALSE) {
                 $variables['sub_theme'] = $config["theme$i"];
                 $variables['sub_theme_sitename'] = $config["sitename$i"];
+                $variables['site_admin'] = $config["admin$i"];
                 break;
             }
         }
     }
+    */
+
+
 
 
     $variables['url_theme'] = $variables['url_site'] . '/' . $variables['dir_theme'];

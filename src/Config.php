@@ -30,17 +30,14 @@ class Config {
             self::update($uid, $k, $v);
         }
     }
-    public static function set($group_id, $code, $value) {
-        if ( self::exist($group_id, $code) ) self::update($group_id, $code, $value);
-        else self::insert($group_id, $code, $value);
-    }
-    public static function update($group_id, $code, $value) {
-        db_update(self::table())
-            ->fields(['value'=>$value])
-            ->condition('group_id', $group_id)
-            ->condition('code', $code)
-            ->execute();
-    }
+
+
+    /**
+     * Returns a value of a code of a group.
+     * @param $group_id
+     * @param $code
+     * @return mixed
+     */
     public static function get($group_id, $code) {
         $db = db_select(self::table());
         $db->fields(null, ['value']);
@@ -48,7 +45,33 @@ class Config {
         $db->condition('code', $code);
         $result = $db->execute();
         $re = $result->fetchAssoc(\PDO::FETCH_ASSOC);
-        return $re['value'];
+        if ( $re ) return $re['value'];
+        else return null;
+    }
+
+    /**
+     * Sets a value
+     * @param $group_id - is the group id. It can be a string.
+     * @param $code - code of the group.
+     * @param $value - value of the code.
+     */
+    public static function set($group_id, $code, $value) {
+        if ( self::exist($group_id, $code) ) self::update($group_id, $code, $value);
+        else self::insert($group_id, $code, $value);
+    }
+
+    /**
+     * Updates a code of a group.
+     * @param $group_id
+     * @param $code
+     * @param $value
+     */
+    public static function update($group_id, $code, $value) {
+        db_update(self::table())
+            ->fields(['value'=>$value])
+            ->condition('group_id', $group_id)
+            ->condition('code', $code)
+            ->execute();
     }
 
     public static function getGroup($group_id) {

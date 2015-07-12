@@ -49,6 +49,8 @@ class Library {
         '12'=>'December'
     ];
     private static $count_log = 0;
+    private static $subsite = [];
+    private static $subsite_info = [];
 
     public static function getThemeName() {
         $uri = \Drupal::request()->getRequestUri();
@@ -116,6 +118,10 @@ class Library {
         return \Drupal::currentUser()->getAccount()->id();
     }
 
+    public static function myName() {
+        return \Drupal::currentUser()->getAccount()->getUsername();
+    }
+
     public static function login() {
         return self::myUid();
     }
@@ -128,7 +134,7 @@ class Library {
     *checks user role if the user is an admin
     *requires $uid
     */
-    public static function isAdmin(){
+    public static function isAdmin() {
         $user = User::load( self::myUid() );
         if( $user->roles->target_id == 'administrator' ) return 1;
         else return 0;
@@ -956,6 +962,37 @@ class Library {
 
     public static function userAgent() {
         return isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : null;
+    }
+
+    public static function getSubsiteInformation() {
+
+
+        if ( ! empty(self::$subsite_info) ) return self::$subsite_info;
+
+        $sites = self::getAllSubsiteInformation();
+
+        $domain = Library::domain_name();
+        for ($i = 1; $i <= MAX_DOMAIN; $i++) {
+            if (!empty($sites["domain$i"])) {
+                if (strpos($domain, $sites["domain$i"]) !== FALSE) {
+                    self::$subsite_info['sub_theme'] = $sites["theme$i"];
+                    self::$subsite_info['sub_theme_sitename'] = $sites["sitename$i"];
+                    self::$subsite_info['sub_admin'] = $sites["admin$i"];
+                    break;
+                }
+            }
+        }
+
+        return self::$subsite_info;
+    }
+
+    /**
+     * @return array
+     */
+    private static function getAllSubsiteInformation() {
+        if ( ! empty(self::$subsite) ) return self::$subsite;
+        self::$subsite = Library::getGroupConfig('theme');
+        return self::$subsite;
     }
 
 
