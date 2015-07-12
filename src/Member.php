@@ -58,7 +58,12 @@ class Member {
     }
 
     public static function loadByDomain($domain) {
-        return Config::getGroup("domain.$domain");
+        $rows = Config::getGroup("domain.$domain");
+        $members = [];
+        foreach( $rows as $uid => $name ) {
+            $members[] = Member::load($uid);
+        }
+        return $members;
     }
 
     public static function countByDomain() {
