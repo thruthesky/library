@@ -995,6 +995,16 @@ class Library {
         return self::$subsite;
     }
 
+    /**
+     * Returns true if the logged in user is site admin
+     * @return bool
+     */
+    public static function isSiteAdmin() {
+        $site = Library::getSubsiteInformation();
+        if ( $site['sub_admin'] == Library::myUsername() ) return true;
+        else return false;
+    }
+
 
 }
 

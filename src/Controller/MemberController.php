@@ -35,12 +35,12 @@ class MemberController extends ControllerBase {
         $re = Library::registerDrupalUser($username, $r->get('password'), $r->get('mail'));	
 		
         if ( $re == Library::ERROR_USER_EXISTS ) {			
-            Library::error('User ID exists.', Language::string('library', 'user_name_already_taken', ['user_name'=>$username]));
-            return self::registerPage();
+            //Library::error('User ID exists.', Language::string('library', 'user_name_already_taken', ['user_name'=>$username]));
+            return self::registerTheme(['error'=>"User name exists."]);
         }
 		
-        Library::loginUser($username);
-        Member::updateMemberFormSubmit($username);		
+        $uid = Library::loginUser($username);
+        Member::updateMemberFormSubmit($username, $uid);
 
         return new RedirectResponse('/');
     }
@@ -63,7 +63,7 @@ class MemberController extends ControllerBase {
         ];
     }
     public static function update() {
-        Member::updateMemberFormSubmit(Library::myUsername());
+        Member::updateMemberFormSubmit(Library::myUsername(), Library::myUid());
         return [
             '#theme' => Library::getThemeName(),
             '#data' => [

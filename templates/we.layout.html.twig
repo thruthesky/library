@@ -1,0 +1,13 @@
+{% import dir_macro ~ '/html.html.twig' as html  %}
+<section class="we {{ data.page }} {{ data.action }}">
+    {% if data.page %}
+        {% if data.error %}
+            {{ html.error(data) }}
+        {% else %}
+            {% include dir_module ~ '/templates/we.' ~ data.page ~ '.' ~ data.action ~ '.html.twig' %}
+        {% endif %}
+    {% else %}
+        Wrong access : No page code.
+    {% endif %}
+</section>
+.

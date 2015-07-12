@@ -1,3 +1,24 @@
+# SO We -----------------------------------------------------------
+we:
+  path: '/we'
+  defaults:
+    _controller: Drupal\library\Controller\WeController::page
+  requirements:
+    _permission: 'access content'
+we.page:
+  path: '/we/{page}'
+  defaults:
+    _controller: Drupal\library\Controller\WeController::page
+  requirements:
+    _permission: 'access content'
+we.page.action:
+  path: '/we/{page}/{action}'
+  defaults:
+    _controller: Drupal\library\Controller\WeController::page
+  requirements:
+    _permission: 'access content'
+# EO --------------------------------------------------------------
+
 library:
   path: '/library'
   defaults:

@@ -74,14 +74,57 @@ class Config {
             ->execute();
     }
 
+    /**
+     * @param $group_id
+     * @return array
+     *
+     * @Attention If there is '%' in $group_id, then it searches as LIKE
+     *
+     * @code
+     *      Config::getGroup("user.$username");
+     *      Config::getGroup("domain.$domain");
+     *      Config::getGroup("domain.%");
+     * @endcode
+     */
     public static function getGroup($group_id) {
         $db = db_select(self::table());
         $db->fields(null, ['code','value']);
-        $db->condition('group_id', $group_id);
+        if ( strpos($group_id, '%') !== false ) $db->condition('group_id', $group_id, 'LIKE');
+        else $db->condition('group_id', $group_id);
         $result = $db->execute();
+        //di($group_id);
+        //di($result->getQueryString());
         $rows = [];
         while ( $row = $result->fetchAssoc(\PDO::FETCH_ASSOC) ) {
             $rows[$row['code']] = $row['value'];
+        }
+        return $rows;
+    }
+
+
+
+
+
+
+    /**
+     * Returns the Group ID and its count.
+     *
+     * @param null $prefix - it can search by 'prefix'
+     * @return array
+     */
+    public static function countByGroup($prefix=null) {
+
+        $q = "SELECT group_id, COUNT(*) AS cnt FROM " . self::table();
+        if ( $prefix ) $q .= " WHERE group_id LIKE '$prefix%'";
+        $q .= " GROUP BY group_id";
+
+        Library::log($q);
+        $result = db_query($q);
+        $rows = [];
+        while($row = $result->fetchAssoc(\PDO::FETCH_ASSOC)) {
+            //Library::log($row);
+            $row['group_id'] = str_replace($prefix, '', $row['group_id']);
+            $rows[] = $row;
         }
         return $rows;
     }
@@ -109,4 +152,5 @@ class Config {
             ->condition('code', $code)
             ->execute();
     }
+
 }

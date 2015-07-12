@@ -1,0 +1,21 @@
+{#
+    - for admin, data.domains will be the value to show.
+    - for site admin, data.member_list will be the value to show.
+
+#}
+{% include dir_module ~ '/templates/we.admin.menu.html.twig' %}
+
+
+
+{% if data.domains %}
+    {% for domain in data.domains %}
+        <div>
+            {{ domain.group_id }} : {{ domain.cnt }}
+            [ <a href="/we/admin/member?domain={{ domain.group_id }}">View</a> ]
+        </div>
+    {% endfor %}
+{% elseif data.member_list %}
+    {% for member in data.member_list %}
+
+    {% endfor %}
+{% endif %}

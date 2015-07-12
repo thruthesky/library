@@ -12,6 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 use Drupal\library\Entity\Category;
 
 define('MAX_DOMAIN', 10);
+define('DIR_WE_LIBRARY', 'modules/library');
 
 if ( ! function_exists('di') ) {
     function di($obj)
@@ -91,6 +92,12 @@ function library_theme()
     }
 
 
+    $themes['we.layout'] = [
+        'variables' => [ 'data' => null ],
+        'template' => 'we.layout'
+    ];
+
+
     $themes['library.layout'] = [
         'variables' => [ 'data' => null ],
         'template' => 'library.layout'
@@ -141,6 +148,9 @@ function library_preprocess( &$variables, $hook ) {
     $variables['url_site'] = Library::getSiteUrl();
     $variables['dir_macro'] = "modules/library/templates/macros";
 
+
+    $variables['dir_module'] = DIR_WE_LIBRARY;
+
     /**
      * Get 'theme' and 'sub_theme'
      */
@@ -153,6 +163,13 @@ function library_preprocess( &$variables, $hook ) {
 
 
     $variables = array_merge( $variables, Library::getSubsiteInformation() );
+
+
+
+    if ( isset($variables['sub_admin']) ) {
+        if ( $variables['sub_admin'] == Library::myName() ) $variables['is_site_admin'] = true;
+    }
+
 
     /*
     $config = Library::getGroupConfig('theme');
