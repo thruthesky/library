@@ -26,8 +26,7 @@
 	{% set numberOfUnits = 0 %}
 	{% for unit, text in tokens %}			
 		{% if( time > unit and numberOfUnits == 0 ) %}				
-			{% set time = ( time / unit ) | round( 0, 'ceil' ) %}		
-			{% set numberOfUnits =  time | round( 0, 'floor' ) %}
+			{% set numberOfUnits = ( time / unit ) | round( 0, 'floor' ) %}		
 			<span class='date'>{{ numberOfUnits }} {{ text }}{{ numberOfUnits > 1 ? 's'}} ago</span>
 		{% else %}
 			{# this is continue #}
