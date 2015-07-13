@@ -1,12 +1,16 @@
 section.error {
-    padding:1em;
     box-sizing: border-box;
+}
+
+section.error h3{		
+	margin:0 0 5px 0;
+	font-size:2em;
 }
 
 section.error .go-back b {
     display:block;
     margin-top:1em;
-    padding:1em;
+    padding:1em 0;
     background-color:white;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
