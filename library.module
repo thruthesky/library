@@ -145,6 +145,8 @@ function library_preprocess( &$variables, $hook ) {
 
 
 
+
+    $variables['domain'] = Library::domainNameWithoutWWW();
     $variables['url_site'] = Library::getSiteUrl();
     $variables['dir_macro'] = "modules/library/templates/macros";
 
@@ -170,24 +172,6 @@ function library_preprocess( &$variables, $hook ) {
     if ( isset($variables['sub_admin']) ) {
         if ( $variables['sub_admin'] == Library::myName() ) $variables['is_site_admin'] = true;
     }
-
-
-    /*
-    $config = Library::getGroupConfig('theme');
-    $domain = Library::domain_name();
-    for ($i = 1; $i <= MAX_DOMAIN; $i++) {
-        if (!empty($config["domain$i"])) {
-            if (strpos($domain, $config["domain$i"]) !== FALSE) {
-                $variables['sub_theme'] = $config["theme$i"];
-                $variables['sub_theme_sitename'] = $config["sitename$i"];
-                $variables['site_admin'] = $config["admin$i"];
-                break;
-            }
-        }
-    }
-    */
-
-
 
 
     $variables['url_theme'] = $variables['url_site'] . '/' . $variables['dir_theme'];
