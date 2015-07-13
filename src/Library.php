@@ -1001,8 +1001,12 @@ class Library {
      */
     public static function isSiteAdmin() {
         $site = Library::getSubsiteInformation();
-        if ( $site['sub_admin'] == Library::myUsername() ) return true;
-        else return false;
+        if ( isset($site['sub_admin'] ) ) {
+            if ($site['sub_admin'] == Library::myUsername()) {
+                return TRUE;
+            }
+        }
+        return false;
     }
 
 
