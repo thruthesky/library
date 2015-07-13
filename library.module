@@ -140,6 +140,8 @@ function library_preprocess( &$variables, $hook ) {
     /** @note use my_uid */
     $variables['my_uid'] = Library::myUid();
     $variables['my_name'] = Library::myName();
+	/*added by benjamin because it was not pushed*/
+    $variables['domain'] = Library::domainNameWithoutWWW();
 
     $variables['input'] = Library::input();
 
