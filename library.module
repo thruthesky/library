@@ -150,6 +150,7 @@ function library_preprocess( &$variables, $hook ) {
 
 
     $variables['dir_module'] = DIR_WE_LIBRARY;
+    $variables['dir_module_library'] = DIR_WE_LIBRARY;
 
     /**
      * Get 'theme' and 'sub_theme'

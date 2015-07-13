@@ -1,12 +1,14 @@
 {% import dir_macro ~ '/html.html.twig' as html %}
 {{ html.error(data) }}
-<form method="post">
-    <fieldset>
-        <legend>Member Login</legend>
-        <input type="hidden" name="mode" value="submit">
-        {{ html.input({'type':'text','name':'username', 'id':'register-username', 'class':'username', 'value':'', 'label':'User ID', 'placeholder':'User ID'}) }}
-        {{ html.input({'type':'password','name':'password', 'id':'register-password', 'class':'password', 'value':'', 'label':'Password', 'placeholder':'Password'}) }}
-        <input type="submit" role="button" value="LOGIN">
-        <a href="#" role="button">CANCEL</a>
-    </fieldset>
-</form>
+<div class="member-login">
+    <h2 class='title'>{{ ko ? '로그인' : 'Sign in' }}</h2>
+    <form method="post">
+        <fieldset>
+            <legend>Member Login</legend>
+            <input type="hidden" name="mode" value="submit">
+            {{ html.input({'type':'text','name':'username', 'id':'register-username', 'class':'username', 'value':'', 'label': ko ? '회원 아이디' : 'User ID', 'placeholder':ko ? '회원 아이디' : 'User ID'}) }}
+            {{ html.input({'type':'password','name':'password', 'id':'register-password', 'class':'password', 'value':'', 'label': ko ? '비밀번호' : 'Password', 'placeholder': ko ? '비밀번호' : 'Password'}) }}
+            <div class="buttons"><input type="submit" value="{{ ko ? '로그인' : 'Log In' }}"><a href='/member/register'>{{ ko ? '회원 가입' : 'Create an Account' }}</a></div>
+        </fieldset>
+    </form>
+</div>
