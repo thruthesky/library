@@ -118,8 +118,12 @@ class Library {
         return \Drupal::currentUser()->getAccount()->id();
     }
 
+    /**
+     * @deprecated use myUsername() instead.
+     * @return mixed
+     */
     public static function myName() {
-        return \Drupal::currentUser()->getAccount()->getUsername();
+        return self::myUsername();
     }
 
     public static function login() {
