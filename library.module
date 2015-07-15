@@ -233,13 +233,9 @@ function library_preprocess( &$variables, $hook ) {
         $route->setDefault('_title', 'H');
     }
 
-
-
     $variables['error'] = Library::getError();
     Library::parseErrorMessage($variables);
 }
-
-
 
 
 /**
