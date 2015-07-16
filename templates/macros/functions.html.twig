@@ -1,5 +1,5 @@
 {% macro get(no, value) %}
-    {% set bar = value | split(',') %}
+    {% set bar = value | split(',') %}	
     {% if bar | length > 1 %}
         {% if not no %}
             {{ bar[0] }}
