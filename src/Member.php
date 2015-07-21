@@ -16,6 +16,17 @@ use Drupal\library\Config;
  */
 
 class Member {
+    /**
+     * @param $uid
+     * @return null|static
+     *
+     *
+     * @code
+     *  $member = Member::load(Library::myUid());
+     *  $number = $member->extra['mobile'];
+     * @endcode
+     *
+     */
     public static function load($uid) {
         $user = User::load($uid);
         $user->extra = self::extra($user->get('name')->value);
