@@ -82,4 +82,32 @@ class MemberController extends ControllerBase {
         return $error;
     }
 
+	/*
+	*code by benjamin
+	*will this be okay?
+	*/
+	public static function view() {
+		$data = [];
+		$uri = \Drupal::request()->getRequestUri();
+		$user_name = end( explode( "/", $uri ) );
+		
+		//any other way for this one?
+		$user = user_load_by_name( $user_name );
+		$user = Member::load( $user->id() );
+		
+		//di( $user->user_picture->target_id );
+		if( !empty( $user ) ){
+			$data['user'] = $user;
+			$data['user_name'] = $user->label();
+			$data['months'] = Library::$months;
+		}
+		else{
+			$data['error'] = "User does no exist";
+		}
+		
+		return [
+            '#theme' => 'member.view',
+            '#data' => $data,
+        ];
+	}
 }

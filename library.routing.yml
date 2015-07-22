@@ -105,3 +105,10 @@ member.update:
   requirements:
     _permission: 'access content'
 
+member.view:
+  path: '/member/view/{user_name}'
+  defaults:
+    _controller: Drupal\library\Controller\MemberController::view
+  requirements:
+    _permission: 'access content'
+

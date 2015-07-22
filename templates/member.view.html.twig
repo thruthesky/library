@@ -1,0 +1,20 @@
+{% set user = data.user %}
+{% import dir_message ~ '/templates/macro/html.html.twig' as html %}
+<section class='user-profile'>
+	{% if data.error %}
+		{{ html.error(data) }}
+	{% else %}
+		<h1 class='name'>{{ user.label }}'s Profile page</h1>
+		<div class='birth-day'>Birth date: {{ data.months[ user.extra.month ] }} {{ user.extra.day }}, {{ user.extra.year }}</div>
+		<div class='gender'>Gender: {{ user.extra.gender }}</div>
+		<div class='mobile'>Mobile: {{ user.extra.mobile }}</div>
+	{% endif %}
+	
+	<br>
+	Profile Photo:
+	<form>
+		<input type='hidden' name='type' value='user'>
+		<input type='hidden' name='uid' value='{{ user.id }}'>
+		<input type='file' name='profile_photo'>
+	</form>
+</section>
