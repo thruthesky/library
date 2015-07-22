@@ -1014,5 +1014,42 @@ class Library {
     }
 
 
+
+    public static function fileUploadInfo()
+    {
+        $re = [];
+        foreach ($_FILES as $k => $v) {
+            $f = array();
+            $f['form_name'] = $k;
+            if (is_array($v['name'])) {
+                for ($i = 0; $i < count($v['name']); $i++) {
+                    $f['name'] = $v['name'][$i];
+                    $f['type'] = $v['type'][$i];
+                    $f['tmp_name'] = $v['tmp_name'][$i];
+                    $f['error'] = $v['error'][$i];
+                    $f['size'] = $v['size'][$i];
+                    $re[] = $f;
+                }
+            } else {
+                $f['name'] = $v['name'];
+                $f['type'] = $v['type'];
+                $f['tmp_name'] = $v['tmp_name'];
+                $f['error'] = $v['error'];
+                $f['size'] = $v['size'];
+                $re[] = $f;
+            }
+        }
+        return $re;
+    }
+
+
+    public static function isLibraryMemberPage() {
+        $request = \Drupal::request();
+        $uri = $request->getRequestUri();
+        if ( strpos( $uri, '/member') !== FALSE ) {
+            return TRUE;
+        }
+        else return FALSE;
+    }
 }
 

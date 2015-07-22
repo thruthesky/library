@@ -216,6 +216,9 @@ function library_preprocess( &$variables, $hook ) {
         if (Library::isLibraryCategoryPage()) {
             $variables['#attached']['library'][] = 'library/category';
         }
+        else if ( Library::isLibraryMemberPage()) {
+            $variables['#attached']['library'][] = 'library/member';
+        }
     }
 
     /*if $hook*/

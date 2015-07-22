@@ -22,3 +22,13 @@ category:
   css:
     theme:
       css/category.component.css: {}
+
+member:
+  version: 1.x
+  js:
+    js/member.js: {}
+  dependencies:
+    - core/jquery
+  css:
+    theme:
+      css/member.component.css: {}
