@@ -12,7 +12,7 @@ section.error h3{
 section.error .go-back b {
     display:block;
     margin-top:1em;
-    padding:1em 0;
+    padding:1em;
     background-color:white;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;

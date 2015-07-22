@@ -24,14 +24,21 @@
 			60 : 'minute',
 			1 : 'second' } %}
 	{% set numberOfUnits = 0 %}
+	{% set text_display = "" %}
 	{% for unit, text in tokens %}			
 		{% if( time > unit and numberOfUnits == 0 ) %}				
-			{% set numberOfUnits = ( time / unit ) | round( 0, 'floor' ) %}		
-			<span class='date'>{{ numberOfUnits }} {{ text }}{{ numberOfUnits > 1 ? 's'}}</span>
+			{% set numberOfUnits = ( time / unit ) | round( 0, 'floor' ) %}
+			{% set text_display = numberOfUnits ~ " " ~ text ~ ( numberOfUnits > 1 ? 's' )%}			
 		{% else %}
 			{# this is continue #}
 		{% endif %}
 	{% endfor %}
+	
+	{% if text_display is empty %}
+		{% set text_display = "Just Now"%}
+	{% endif %}
+	
+	<span class='date'>{{ text_display }}</span>
 {% endmacro %}
 
 {% macro humanTimingMessageUnique(time) %}
@@ -45,21 +52,27 @@
 			60 : 'minute',
 			1 : 'second' } %}
 	{% set numberOfUnits = 0 %}
+	{% set text_display = "" %}
 	{% for unit, text in tokens %}			
 		{% if( time_difference > unit and numberOfUnits == 0 ) %}				
 			{% set numberOfUnits = ( time_difference / unit ) | round( 0, 'floor' ) %}	
 			{% if text == 'second' or text == 'minute' or text == 'hour' %}
-				{{ numberOfUnits }} {{ text }}{{ numberOfUnits > 1 ? 's'}}
+				{% set text_display = numberOfUnits ~ " " ~ text ~ ( numberOfUnits > 1 ? 's' )%}
 			{% else %}
 				{# also show year if the year is different from now #}
 				{% if "now"|date("Y") != time|date("Y") %}
-					{{ time|date("M d, Y") }}
+					{% set text_display = time|date("M d, Y") %}
 				{% else %}
-					{{ time|date("M d") }}
+					{% set text_display = time|date("M d") %}
 				{% endif %}				
 			{% endif %}
 		{% else %}
 			{# this is continue #}
 		{% endif %}
 	{% endfor %}
+	
+	{% if text_display is empty %}
+		{% set text_display = "Just Now"%}
+	{% endif %}
+	<span class='date'>{{ text_display }}</span>
 {% endmacro %}
