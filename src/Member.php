@@ -106,6 +106,7 @@ class Member {
         }
         else $uid = $username;
         $stamp = Member::get($uid, 'stamp_last_access');
+        Library::log("isOnline($username) : stmap: $stamp");
         if ( $stamp + 10 * 60 > time() ) return true;
         else return false;
     }
