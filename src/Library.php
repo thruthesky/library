@@ -1042,7 +1042,48 @@ class Library {
         }
         return $re;
     }
-
+	
+	public static function updateUploadedFiles( $id, $type = null ){
+		$request = \Drupal::request();
+		$ids = $request->get('fid');
+			
+		if ( $ids ) {
+			$fids = explode(',', $ids);
+			foreach( $fids as $fid ) {
+				if ( empty($fid) || ! is_numeric($fid) ) continue;
+				
+				
+				//if the type is profile_photo, change user__user_picture target_id but leave the old images...
+				if( $type == 'profile_photo' ){
+					$user = User::load( $id );
+					$user->set( "user_picture", $fid );
+					$user->save();
+				}
+				//////////////////////////////////////
+				
+				$file = File::load($fid);
+								
+				if ( $file ) {
+					$file->set('status', 1)->save();
+					db_update('file_usage')
+						->fields(['id'=>$id])
+						->condition('fid', $fid)
+						->execute();
+				}
+			}
+		}
+	}
+	
+	public static function getFileUrl( $file_entity ) {
+		$file_url = [];
+		$file_url['fid'] = $file_entity->id();
+		$file_url['url_original'] = $file_entity->url();
+		$path = $file_entity->getFileUri();
+		$file_url['url_thumbnail'] = entity_load('image_style', 'thumbnail')->buildUrl($path);
+		$file_url['url_medium'] = entity_load('image_style', 'medium')->buildUrl($path);
+		$file_url['url_large'] = entity_load('image_style', 'large')->buildUrl($path);
+		return $file_url;
+	}
 
     public static function isLibraryMemberPage() {
         $request = \Drupal::request();

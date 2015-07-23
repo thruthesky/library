@@ -1,0 +1,36 @@
+.member-register-form .primary-photo{	
+	margin-bottom:10px;
+}
+
+.member-register-form .primary-photo .photo{
+	/*float:right;*/
+	position:relative;
+	max-width: 140px;
+	/*border: 1px dashed #b6cff8;*/
+	background: url('/modules/mall/img/photo.png');
+	background-repeat: no-repeat;
+	background-position: 50% 45%;
+	background-color: #f1f1f1;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+
+.member-register-form .primary-photo .photo input[type='file']{
+	position:absolute;
+	top:0;
+	left:0;
+	height:100%;
+	width: 100%;
+	z-index:1;
+	cursor:pointer;
+	opacity:0;
+}
+
+.member-register-form .primary-photo .photo > img{
+	width:100%;
+}
+
+.member-register-form .primary-photo .photo > img.fake{
+	opacity:0;
+}

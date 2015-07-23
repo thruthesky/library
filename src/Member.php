@@ -8,6 +8,8 @@ namespace Drupal\library;
 use Drupal\user\Entity\User;
 use Drupal\library\Config;
 
+use Drupal\file\Entity\File;//used for profile photo url
+
 
 /**
  * Class Member
@@ -30,10 +32,16 @@ class Member {
     public static function load($uid) {
         $user = User::load($uid);
         $user->extra = self::extra($user->get('name')->value);
+		
+		if( !empty( $user->user_picture->target_id ) ){
+			$user->photo = file::load( $user->user_picture->target_id );
+			$user->photo->thumbnails = Library::getFileUrl( $user->photo );
+		}
+		
         return $user;
     }
 
-    public static function updateMemberFormSubmit($username, $uid) {
+    public static function updateMemberFormSubmit($username, $uid) {		
         $input = Library::input();
 		
 		//just for confirm password

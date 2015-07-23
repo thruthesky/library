@@ -29,6 +29,7 @@ member:
     js/member.js: {}
   dependencies:
     - core/jquery
+    - core/jquery.form
   css:
     theme:
       css/member.component.css: {}

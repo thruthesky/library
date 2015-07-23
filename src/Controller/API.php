@@ -1,5 +1,5 @@
 <?php
-namespace Drupal\message\Controller;
+namespace Drupal\library\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\file\Entity\File;
 
@@ -27,13 +27,12 @@ class API extends ControllerBase
     }
 
 
-    public static function fileUpload() {
+    public static function fileUpload() {		
         Library::log("fileUpload() begin");
 
-        $uploads = Library::fileUploadInfo();
-
+        $uploads = Library::fileUploadInfo();		
         Library::log($uploads);
-        file_prepare_directory($repo = DIR_MESSAGE_DATA, FILE_CREATE_DIRECTORY);
+        file_prepare_directory($repo = DIR_LIBRARY_DATA, FILE_CREATE_DIRECTORY);
 
         $re = [];
         foreach( $uploads as $upload ) {
@@ -51,10 +50,10 @@ class API extends ControllerBase
                 $file = file_save_data(file_get_contents($upload['tmp_name']), $path);
                 if ($file) {
                     $upload['url'] = $file->url();
-                    $upload['thumbnails'] = Message::getFileUrl( $file );
+                    $upload['thumbnails'] = Library::getFileUrl( $file );
                     $upload['fid'] = $file->id();
                     $info['form_name'] = $upload['form_name'];
-                    \Drupal::service('file.usage')->add($file, 'message', $upload['form_name'], 0); // refer buildguide
+                    \Drupal::service('file.usage')->add($file, 'library', $upload['form_name'], 0); // refer buildguide
                     $file->set('status', 0)->save(); // refer #buildguide
                 }
             }
@@ -63,7 +62,6 @@ class API extends ControllerBase
             }
             $re[] = $upload;
         }
-
         return ['files'=>$re];
     }
 

@@ -63,7 +63,15 @@ class MemberController extends ControllerBase {
         ];
     }
     public static function update() {
+		$request = \Drupal::request();
+	
         Member::updateMemberFormSubmit(Library::myUsername(), Library::myUid());
+		$fid = $request->get("fid");
+		
+		if( !empty( $fid ) ){						
+			Library::updateUploadedFiles( Library::myUid(), "profile_photo" );			
+		}
+		
         return [
             '#theme' => Library::getThemeName(),
             '#data' => [
@@ -92,8 +100,7 @@ class MemberController extends ControllerBase {
 		//di( $user->user_picture->target_id );
 		if( !empty( $user ) ){
 			$user = Member::load( $user->id() );
-			$data['user'] = $user;
-			$data['user_name'] = $user->label();
+			$data['user'] = $user;			
 			$data['months'] = Library::$months;
 		}
 		else{
