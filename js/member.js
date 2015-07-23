@@ -91,10 +91,15 @@ function callback_profile_photo_ajax_file_upload( $form, re ){
         alert(re);
         return;
     }
-	
-	$( ".member-register-form input[name='fid']" ).val( data['files'][0]['fid'] );
-	//console.log( data['files'][0]['thumbnails']['url_medium'] );
-	//primary-photo
-	$( ".member-register-form .primary-photo .photo > img" ).prop( "src", data['files'][0]['thumbnails']['url_medium']);
-	$( ".member-register-form .primary-photo .photo > img" ).removeClass("fake");
+	console.log( data );
+	if( data.code == 0 ){
+		$( ".member-register-form input[name='fid']" ).val( data['files'][0]['fid'] );
+		//console.log( data['files'][0]['thumbnails']['url_medium'] );
+		//primary-photo
+		$( ".member-register-form .primary-photo .photo > img" ).prop( "src", data['files'][0]['thumbnails']['url_medium']);
+		$( ".member-register-form .primary-photo .photo > img" ).removeClass("fake");
+	}
+	else{
+		alert( data.error );
+	}
 }

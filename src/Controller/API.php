@@ -33,12 +33,24 @@ class API extends ControllerBase
         $uploads = Library::fileUploadInfo();		
         Library::log($uploads);
         file_prepare_directory($repo = DIR_LIBRARY_DATA, FILE_CREATE_DIRECTORY);
-
+		
         $re = [];
         foreach( $uploads as $upload ) {
             Library::log("name: $upload[name], tmp_name: $upload[tmp_name]");
-
-            if (empty($upload['error'])) {
+			//di( $upload );
+			if( $upload['form_name'] == "profile_photo" ){
+				if( strpos( $upload['type'], "image/" ) !== false ) {}
+				else {
+					//$error = "Invalid file format!";
+					$data = [];
+					$data['code'] = "-10001";
+					$data['error'] = "Invalid file format!";
+					return $data;
+				}
+				//di( $upload );exit;
+			}
+			
+            if ( empty($upload['error'])  ) {
                 $name = urlencode($upload['name']);
                 if ( strlen($name) > 150 ) {
                     $pi = pathinfo($name);
