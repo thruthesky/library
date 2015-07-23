@@ -37,8 +37,12 @@ class Member {
 			$user->photo = file::load( $user->user_picture->target_id );
 			$user->photo->thumbnails = Library::getFileUrl( $user->photo );
 		}
-		
         return $user;
+    }
+
+    public static function load_by_name($name) {
+        $uid = user_load_by_name($name);
+        return self::load($uid);
     }
 
     public static function updateMemberFormSubmit($username, $uid) {		
@@ -87,5 +91,22 @@ class Member {
 
     public static function countByDomain() {
         return Config::countByGroup('domain.');
+    }
+
+    /**
+     * @param $username
+     * @return bool
+     *  - true if the user's last page access is within the past of 10 minutes.
+     */
+    public static function isOnline($username)
+    {
+        if ( is_string($username)) {
+            $user = user_load_by_name($username);
+            $uid = $user->id();
+        }
+        else $uid = $username;
+        $stamp = Member::get($uid, 'stamp_last_access');
+        if ( $stamp + 10 * 60 > time() ) return true;
+        else return false;
     }
 }
