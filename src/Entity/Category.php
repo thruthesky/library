@@ -215,6 +215,8 @@ class Category extends ContentEntityBase implements CategoryInterface {
      */
     public static function loadParents($id) {
 
+        if ( empty($id) ) return [];
+
         $entity = self::load($id);
         //echo "no: $no \n";
         if ( $entity ) {
@@ -230,6 +232,7 @@ class Category extends ContentEntityBase implements CategoryInterface {
             }
             return $rows;
         }
+        else return [];
     }
 
     /*
@@ -255,8 +258,11 @@ class Category extends ContentEntityBase implements CategoryInterface {
      */
     public static function groupRoot($id) {
         $categories = self::loadParents($id);
-        $reversed = array_reverse($categories);
-        return reset($reversed);
+        if ( $categories ) {
+            $reversed = array_reverse($categories);
+            return reset($reversed);
+        }
+        else return FALSE;
     }
 
     public static function groupParents($no) {

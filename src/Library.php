@@ -823,6 +823,7 @@ class Library {
     }
 
     private static function existBrowserID($uid, $browser_id) {
+        if ( empty($uid) ) return false;
         $result = db_select('library_member_browser_id')
             ->fields(null, ['browser_id'])
             ->condition('user_id', $uid)
