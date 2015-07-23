@@ -9,9 +9,11 @@
 			{% if user.photo %}
 				<img src='{{ user.photo.thumbnails['url_medium'] }}'/>	
 			{% endif %}
+			{% if my_uid == data.user.id %}
 				<h3>
 					<a href='/member/update'>Update your profile.</a>
 				</h3>			
+			{% endif %}
 		</div>
 		
 		<div class='birth-day'>Birth date: {{ data.months[ user.extra.month ] }} {{ user.extra.day }}, {{ user.extra.year }}</div>
