@@ -4,6 +4,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\file\Entity\File;
 
 use Drupal\library\Library;
+use Drupal\library\Member;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -77,5 +78,57 @@ class API extends ControllerBase
         return ['files'=>$re];
     }
 
+	public static function getMemberProfile(){
+		$request = \Drupal::request();
+		$uid = $request->get('uid');
+		$target_id = $request->get('target_id');
+		
+		$data = [];
+		$data['uid'] = $uid;
+		$data['target_id'] = $target_id;
+		
+		$data['markup'] = self::renderMemberProfile( $data['uid'], $data['target_id'] );
+		
+		return $data;
+	}
+	
+	public static function renderMemberProfile( $uid, $target_id ){
+		$member = Member::load( $uid );
+		
+		if( $member->photo ) $photo = $member->photo->thumbnails['url_thumbnail'];
+		else $photo = "/modules/library/img/no_primary_photo.png";
+		
+		$user_id = $member->label();
+		$name = $member->extra['full_name'];
+		
+		$date = date( "M Y",$member->created->value );
+		
+		if( !empty( $member->extra['location'] ) ) $location = "Lives in ".$member->extra['location'];
+		else $location = "Location not specified";
+		
+		
+		$markup =	"
+					<div class='member-profile-box'>
+						<div class='triangle'></div>
+						<div class='triangle two'></div>
+						<div class='row user'>
+							<div class='photo'>
+								<img src='$photo'/>
+							</div>
+							<div class='info'>
+								<div class='name'>$name <span>( $user_id )</span></div>
+								<div class='location'>$location</div>
+								<div class='date'>Member Since $date</div>
+							</div>
+						</div>
+						
+						
+						<div class='row message'><span class='caption'><a href='/message/send?receiver=$user_id'>Message</a></span></div>
+						<div class='row post'><span class='caption'><a href='/post/search?qn=y&q=$user_id'>Search Posts</a></span></div>
+						<div class='row view-profile'><span class='caption'><a href='/member/view/$user_id'>View Profile</a></span></div>
+					</div>
+					";
 
+		return $markup;
+	}
 }
