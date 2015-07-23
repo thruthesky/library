@@ -112,3 +112,9 @@ member.view:
   requirements:
     _permission: 'access content'
 
+library.api:
+  path: '/library/api'
+  defaults:
+    _controller: Drupal\library\Controller\API::defaultController
+  requirements:
+    _permission: 'access content'

@@ -86,17 +86,12 @@ class MemberController extends ControllerBase {
 	*code by benjamin
 	*will this be okay?
 	*/
-	public static function view() {
-		$data = [];
-		$uri = \Drupal::request()->getRequestUri();
-		$user_name = end( explode( "/", $uri ) );
-		
+	public static function view( $user_name ) {
 		//any other way for this one?
-		$user = user_load_by_name( $user_name );
-		$user = Member::load( $user->id() );
-		
+		$user = user_load_by_name( $user_name );				
 		//di( $user->user_picture->target_id );
 		if( !empty( $user ) ){
+			$user = Member::load( $user->id() );
 			$data['user'] = $user;
 			$data['user_name'] = $user->label();
 			$data['months'] = Library::$months;

@@ -10,11 +10,13 @@
 		<div class='mobile'>Mobile: {{ user.extra.mobile }}</div>
 	{% endif %}
 	
-	<br>
-	Profile Photo:
-	<form>
-		<input type='hidden' name='type' value='user'>
-		<input type='hidden' name='uid' value='{{ user.id }}'>
-		<input type='file' name='profile_photo'>
-	</form>
+	{% if my_uid == user.id %}
+		<br>
+		Profile Photo:
+		<form class='user-profile-photo'>
+			<input type='hidden' name='type' value='user'>
+			<input type='hidden' name='uid' value='{{ user.id }}'>
+			<input type='file' name='profile_photo' onchange='JQuery(this).parent().submit();'>
+		</form>
+	{% endif %}
 </section>

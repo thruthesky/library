@@ -14,6 +14,8 @@ use Drupal\library\Entity\Category;
 define('MAX_DOMAIN', 10);
 define('DIR_WE_LIBRARY', 'modules/library');
 
+define('DIR_LIBRARY_DATA', 'public://library/');
+
 if ( ! function_exists('di') ) {
     function di($obj)
     {
