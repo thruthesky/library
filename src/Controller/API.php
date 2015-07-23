@@ -108,7 +108,7 @@ class API extends ControllerBase
 		
 		
 		$markup =	"
-					<div class='member-profile-box'>
+					<div class='member-profile-box' uid='$uid' target_id='$target_id'>
 						<div class='triangle'></div>
 						<div class='triangle two'></div>
 						<div class='row user'>
