@@ -103,9 +103,9 @@ class API extends ControllerBase
 		
 		$date = date( "M Y",$member->created->value );
 		
-		if( !empty( $member->extra['location'] ) ) $location = "Lives in ".$member->extra['location'];
-		else $location = "Location not specified";
-		
+		//if( !empty( $member->extra['location'] ) ) $location = $member->extra['location'];
+		//else $location = "Location not specified";
+		$location = "Philippines";
 		
 		$markup =	"
 					<div class='member-profile-box' uid='$uid' target_id='$target_id'>
@@ -117,18 +117,17 @@ class API extends ControllerBase
 							</div>
 							<div class='info'>
 								<div class='name'>$name <span>( $user_id )</span></div>
-								<div class='location'>$location</div>
-								<div class='date'>Member Since $date</div>
+								<div class='location'><img src='/modules/library/img/member-profile/location.png''/>$location</div>
+								<div class='date'><img src='/modules/library/img/member-profile/time.png''/>$date</div>
 							</div>
-						</div>
-						
-						
-						<div class='row message'><span class='caption'><a href='/message/send?receiver=$user_id'>Message</a></span></div>
-						<div class='row post'><span class='caption'><a href='/post/search?qn=y&q=$user_id'>Search Posts</a></span></div>
-						<div class='row view-profile'><span class='caption'><a href='/member/view/$user_id'>View Profile</a></span></div>
+						</div>	
+						<div class='row message'><span class='caption'>
+							<a href='/message/send?receiver=$user_id'><img src='/modules/library/img/member-profile/message.png'/>Message</a>
+						</span></div>
+						<div class='row post'><span class='caption'><a href='/post/search?qn=y&q=$user_id'>Search Posts</a></span></div>						
 					</div>
 					";
-
+		//<div class='row view-profile'><span class='caption'><a href='/member/view/$user_id'>View Profile</a></span></div>
 		return $markup;
 	}
 }
