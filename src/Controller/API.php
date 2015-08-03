@@ -116,7 +116,7 @@ class API extends ControllerBase
 								<img src='$photo'/>
 							</div>
 							<div class='info'>
-								<div class='name'>$name <span>( $user_id )</span></div>
+								<div class='name'>$name <span>($user_id)</span></div>
 								<div class='location'><img src='/modules/library/img/member-profile/location.png''/>$location</div>
 								<div class='date'><img src='/modules/library/img/member-profile/time.png''/>$date</div>
 							</div>
