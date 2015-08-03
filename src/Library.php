@@ -626,7 +626,7 @@ class Library {
 
 
         // This is list has only one(1) page?
-        if ( $totalpage <= 1 ) {
+        if ( $totalpage <= 1 ) {//removed by benjamin because it only shows a number 1 with no design
             $rt .= "<div class='one-page'>1</div>";
         }
         else {
