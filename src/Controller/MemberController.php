@@ -24,9 +24,16 @@ class MemberController extends ControllerBase {
     }
 
     public static function register_submit() {
-
+		$input = x::input();
+		
         if ( $error = self::checkRegisterSubmit() ) {
-            return self::registerTheme( [ 'error' => $error ] );
+			$data['error'] = $error;
+			$data['input'] = $input;
+			return [
+				'#theme' => 'member.register',
+				'#data' => $data,				
+			];
+            //return self::registerTheme( [ 'error' => $error ] );
         }
 
         $r = \Drupal::request();
@@ -36,7 +43,13 @@ class MemberController extends ControllerBase {
 		
         if ( $re == Library::ERROR_USER_EXISTS ) {			
             //Library::error('User ID exists.', Language::string('library', 'user_name_already_taken', ['user_name'=>$username]));
-            return self::registerTheme(['error'=>"User name exists."]);
+			$data['error'] = "Username is already taken.";
+			$data['input'] = $input;			
+			 return [
+				'#theme' => 'member.register',
+				'#data' => $data,
+			];						
+            //return self::registerTheme(['error'=>"User name exists."]);
         }
 		
         $uid = Library::loginUser($username);

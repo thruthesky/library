@@ -51,12 +51,12 @@
 
 {% macro error(data) %}
     {% if data.error %}
-        <section class="error">
-            <h3>{{ data.error_title | default('Error') }}</h3>
-            <div class="row">
-                <div class="message">{{ data.error }}</div>
-            </div>
-            <a class="go-back" href="javascript:history.go(-1);"><b>GO BACK</b></a>
+        <section class="error mall-error">
+			<div class='row'>
+            <div class='code'>{{ data.error_title | default('Error') }}</div>            
+            <div class="message">{{ data.error }}</div>            
+            {#<a class="go-back" href="javascript:history.go(-1);"><b>GO BACK</b></a>#}
+			</div>
         </section>
     {% endif %}
 {% endmacro %}
