@@ -98,6 +98,7 @@ class API extends ControllerBase
 		if( $member->photo ) $photo = $member->photo->thumbnails['url_thumbnail'];
 		else $photo = "/modules/library/img/no_primary_photo.png";
 		
+		$uid = $member->id();
 		$user_id = $member->label();
 		$name = $member->extra['full_name'];
 		
@@ -124,7 +125,8 @@ class API extends ControllerBase
 						<div class='row message'><span class='caption'>
 							<a href='/message/send?receiver=$user_id'><img src='/modules/library/img/member-profile/message.png'/>Message</a>
 						</span></div>
-						<div class='row post'><span class='caption'><a href='/post/search?qn=y&q=$user_id'>Search Posts</a></span></div>						
+						<div class='row post'><span class='caption'><a href='/post/search?qn=y&q=$user_id'>Search Posts</a></span></div>
+						<div class='row post'><span class='caption'><a href='/mall/item/search?user_id=$uid'>Items on Sale</a></span></div>
 					</div>
 					";
 		//<div class='row view-profile'><span class='caption'><a href='/member/view/$user_id'>View Profile</a></span></div>
