@@ -59,17 +59,23 @@ class MemberController extends ControllerBase {
     }
 
     public static function login() {
+		$input = x::input();		
         $data = [];
         if ( Library::isFromSubmit() ) {
             $r = \Drupal::request();
             if ( Library::checkPassword($r->get('username'), $r->get('password')) ) {
                 Library::loginUser($r->get('username'));
-                return new RedirectResponse('/');
+				
+				if( !empty( $input['redirect'] ) ) return new RedirectResponse($input['redirect']);
+				else return new RedirectResponse('/');
             }
             else {
                 $data['error'] = "Login failed. Please check your ID and Password.";
             }
         }
+		
+		if( $input['error'] ) $data['error'] = $input['error'];
+		
         return [
             '#theme' => Library::getThemeName(),
             '#data' => $data,
