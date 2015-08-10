@@ -105,6 +105,13 @@ member.update:
   requirements:
     _permission: 'access content'
 
+library.member.list:
+  path: '/library/member/list'
+  defaults:
+    _controller: Drupal\library\Controller\MemberController::collection
+  requirements:
+    _permission: 'access content'
+
 member.view:
   path: '/member/view/{user_name}'
   defaults:
