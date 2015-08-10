@@ -1,0 +1,96 @@
+{% set members = data.members %}
+
+{% set total_items = data.total_items %}
+{% set items_per_page = data.items_per_page %}
+{% set input = data.input %}
+
+{% set admin_member_list_page = true %}
+
+{% set starting_num =  input.page * items_per_page - items_per_page + 1 %}
+{% set ending_num =  input.page * items_per_page %}
+
+{% if ending_num > data.total_items %}
+	{% set ending_num = data.total_items %}
+{% endif %}
+
+<div class='mall-admin-page'>
+	<div class='title'>Mall Member List</div>
+	{% include 'modules/mall/templates/error.html.twig' %}
+	{% include 'modules/mall/templates/mall.admin.commands.html.twig' %}
+	<div class='content-wrapper'>
+	<form class='mall-search'>
+		{#<input type='text' name='keyword' value='{{ data.keyword }}'>#}
+		<select name='limit'>
+			<option value='10' {{ input.limit == 10 ? "selected" }}>10</option>
+			<option value='20' {{ input.limit == 20 ? "selected" }}>20</option>
+			<option value='40' {{ input.limit == 40 ? "selected" }}>40</option>
+			<option value='100' {{ input.limit == 100 ? "selected" }}>100</option>
+		</select>
+		<select name='by'>
+			<option value='login' {{ input.by == "login" ? "login" }}>Last Login</option>
+			<option value='access' {{ input.by == "access" ? "selected" }}>Last Page Access</option>
+			<option value='created' {{ input.by == "created" ? "selected" }}>User Created</option>			
+			<option value='user_id' {{ input.by == "user_id" ? "selected" }}>User ID</option>
+		</select>
+		<select name='order'>
+			<option value='DESC' {{ input.order == 'DESC' ? "selected" }}>DESC</option>
+			<option value='ASC' {{ input.order == 'ASC' ? "selected" }}>ASC</option>
+		</select>
+		<input type='submit'>
+	</form>
+	{% if data.keyword %}
+		<div class='mall-search-keyword'>Searching for [ <b>{{ data.keyword }}</b> ]</div>		
+	{% endif %}
+		<div class='mall-search-total'>
+			{{starting_num }} - {{ ending_num }} of {{ total_items }}
+			( Members listed here are only members who has atleast one existing item inside the mall_item )
+		</div>		
+		<table class='mall-table member' cellpadding=0 cellspacing=0 width='100%'>
+			<tr class='header'>
+				<td><span {{ input.by == "user_id" ? "class=sort_selected" }}>User Name</span></td>
+				{#<td><span>Name</span></td>#}
+				<td><span>Email</span></td>
+				<td><span>Mobile</span></td>
+				<td><span {{ input.by == "created" ? "class=sort_selected" }}>Joined</span></td>
+				<td><span {{ input.by == "access" ? "class=sort_selected" }}>Access</span></td>
+				<td><span {{ input.by == "login" ? "class=sort_selected" }}>Login</span></td>
+				{#<td><span>Birth date</span></td>#}
+				{#<td width='150'><span>Location</span></td>#}
+				{#<td><span>Commands</span></td>#}
+			</tr>			
+
+			{% for m in members %}				
+							
+				<tr>
+					<td><span>{{ m.name.value }}({{m.id}})</span></td>
+					{#<td><span>{{ m.extra.full_name }}</span></td>#}
+					<td><span>{{ m.mail.value }}</span></td>
+					<td><span>{{ m.extra.mobile }}</span></td>
+					<td><span>{{ m.created.value | date("M d, Y H:i") }}</span></td>
+					<td><span>{{ m.access.value | date("M d, Y H:i") }}</span></td>
+					<td><span>{{ m.login.value | date("M d, Y H:i") }}</span></td>
+					{#<td><span>{{ m.extra.month }}/{{ m.extra.day }}/{{ m.extra.year }}</span></td>#}
+					{#<td><span>{{ m.extra.location }}</span></td>#}
+					{#<td>
+						{% if( m.roles.target_id == 'administrator' )%}
+						{% else %}
+						<div class="button-wrapper">
+							<a class="command" href="/mall/member/register/?user_id={{ uid }}" target="_blank">Edit</a>
+							<a class="command" href="/mall/admin/member/delete?user_id={{ uid }}" onclick="return member_delete( '{{ m.name.value }}' );">Delete</a>
+						</div>
+						{% endif %}
+					</td>#}
+				</tr>
+			{% endfor %}
+		
+		</table>
+	</div>
+</div>
+
+{% include '/modules/mall/templates/mall.item.pagination.html.twig' %}
+{# TEMPORARY ONLY!! must find another way#}
+<style>
+	.td-left-side-bar{
+		display:none;
+	}
+</style>
