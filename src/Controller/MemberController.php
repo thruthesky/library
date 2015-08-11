@@ -136,45 +136,52 @@ class MemberController extends ControllerBase {
     {		
         $data = [];		
 	
-		$input = Library::input();
-		
-		if( empty( $input['page'] ) ) $input['page'] = 1;		
-		if( empty( $input['limit'] ) ) $input['limit'] = 10;
-		if( empty( $input['by'] ) ) $input['by'] = 'login';//last user login
-		if( empty( $input['order'] ) ) $input['order'] = 'DESC';
-		
-		$page_num = $input['page'];
-		$limit = $input['limit'];	
-		$by = $input['by'];
-		$order = $input['order'];	
-		
-		if( $page_num <= 1 ) $from = 0;
-		else $from = $limit * $page_num - $limit;		
-		
-		$result = db_query("SELECT count( * ) FROM users_field_data");
-		$total_items = array_values( $result->fetchAssoc() )[0];
-		
-		$result = db_query("SELECT uid FROM users_field_data ORDER BY $by $order LIMIT $from, $limit");
-		$rows = $result->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
-		
-		//get earliest date
-		$today = strtotime( "today" );
+		$member = Member::load( Library::myUid() );
+		if( $member->roles->target_id == 'administrator' ){
+				
+			$input = Library::input();
+			
+			if( empty( $input['page'] ) ) $input['page'] = 1;		
+			if( empty( $input['limit'] ) ) $input['limit'] = 10;
+			if( empty( $input['by'] ) ) $input['by'] = 'login';//last user login
+			if( empty( $input['order'] ) ) $input['order'] = 'DESC';
+			
+			$page_num = $input['page'];
+			$limit = $input['limit'];	
+			$by = $input['by'];
+			$order = $input['order'];	
+			
+			if( $page_num <= 1 ) $from = 0;
+			else $from = $limit * $page_num - $limit;		
+			
+			$result = db_query("SELECT count( * ) FROM users_field_data");
+			$total_items = array_values( $result->fetchAssoc() )[0];
+			
+			$result = db_query("SELECT uid FROM users_field_data ORDER BY $by $order LIMIT $from, $limit");
+			$rows = $result->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
+			
+			//get earliest date
+			$today = strtotime( "today" );
 
-		$login = db_query("SELECT uid FROM users_field_data WHERE login > $today");
-		$rows_login = $login->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
+			$login = db_query("SELECT uid FROM users_field_data WHERE login > $today");
+			$rows_login = $login->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
 
-		$data['logins_for_today'] = count( $rows_login );
-		
-		$members = [];
-		foreach( $rows as $row ){
-			$members[ $row['uid'] ] = Member::load( $row['uid'] );
+			$data['logins_for_today'] = count( $rows_login );
+			
+			$members = [];
+			foreach( $rows as $row ){
+				$members[ $row['uid'] ] = Member::load( $row['uid'] );
+			}
+			
+			$data['members'] = $members;		
+			$data['items_per_page'] = $limit;
+			$data['input'] = $input;
+			$data['total_items'] = $total_items;
+		}
+		else{
+			$data['error'] = Library::error('Admin Error.', "Only administrators can view this page");
 		}
 		
-		$data['members'] = $members;		
-		$data['items_per_page'] = $limit;
-		$data['input'] = $input;
-		$data['total_items'] = $total_items;
-
         return [
             '#theme' => x::getThemeName(),
             '#data' => $data,
