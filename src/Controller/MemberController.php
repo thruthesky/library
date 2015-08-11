@@ -160,8 +160,9 @@ class MemberController extends ControllerBase {
 		//get earliest date
 		$today = strtotime( "today" );
 
-		$login = db_query("SELECT uid FROM users_field_data WHERE 'login' > $today");
+		$login = db_query("SELECT uid FROM users_field_data WHERE login > $today");
 		$rows_login = $login->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
+
 		$data['logins_for_today'] = count( $rows_login );
 		
 		$members = [];
