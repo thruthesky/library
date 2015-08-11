@@ -37,13 +37,14 @@
 			<option value='ASC' {{ input.order == 'ASC' ? "selected" }}>ASC</option>
 		</select>
 		<input type='submit'>
-	</form>
+	</form>	
 	{% if data.keyword %}
 		<div class='mall-search-keyword'>Searching for [ <b>{{ data.keyword }}</b> ]</div>		
 	{% endif %}
 		<div class='mall-search-total'>
 			{{starting_num }} - {{ ending_num }} of {{ total_items }}
-			( Members listed here are only members who has atleast one existing item inside the mall_item )
+			Shows all registered users
+			<span style='float:right'>Total logins today ({{ "now" | date("M d, Y")}}) : {{ data.logins_for_today }} users</span>
 		</div>		
 		<table class='mall-table member' cellpadding=0 cellspacing=0 width='100%'>
 			<tr class='header'>

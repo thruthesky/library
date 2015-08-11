@@ -157,6 +157,13 @@ class MemberController extends ControllerBase {
 		$result = db_query("SELECT uid FROM users_field_data ORDER BY $by $order LIMIT $from, $limit");
 		$rows = $result->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
 		
+		//get earliest date
+		$today = strtotime( "today" );
+
+		$login = db_query("SELECT uid FROM users_field_data WHERE 'login' > $today");
+		$rows_login = $login->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
+		$data['logins_for_today'] = count( $rows_login );
+		
 		$members = [];
 		foreach( $rows as $row ){
 			$members[ $row['uid'] ] = Member::load( $row['uid'] );
