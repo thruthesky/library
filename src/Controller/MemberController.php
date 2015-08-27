@@ -168,6 +168,11 @@ class MemberController extends ControllerBase {
 
 			$data['logins_for_today'] = count( $rows_login );
 			
+			$access = db_query("SELECT uid FROM users_field_data WHERE access > $today");
+			$rows_access = $access->fetchAllAssoc('uid',\PDO::FETCH_ASSOC);
+
+			$data['accesses_for_today'] = count( $rows_access );
+			
 			$members = [];
 			foreach( $rows as $row ){
 				$members[ $row['uid'] ] = Member::load( $row['uid'] );
