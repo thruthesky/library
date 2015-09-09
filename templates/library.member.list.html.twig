@@ -67,8 +67,8 @@
 				{% for m in members %}				
 								
 					<tr>
-						<td>	
-							<span class="author member-profile" uid="{{ m.id }}" target_id="{{ m.id }}">{{ m.name.value }}({{m.id}})</span>
+						<td>														
+							<span class="author member-profile {{ m.photo.thumbnails ? "with-photo" }}" uid="{{ m.id }}" target_id="{{ m.id }}">{{ m.name.value }}({{m.id}})</span>
 						</td>
 						{#<td><span>{{ m.extra.full_name }}</span></td>#}
 						<td><span>{{ m.mail.value }}</span></td>
